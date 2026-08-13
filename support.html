@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Support — Kite Agent</title>
+<meta name="description" content="Help with pairing, connecting from outside your home network, and notifications in Kite Agent.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><div class="wrap">
+  <a class="mark" href="/">Kite Agent</a>
+  <nav><a href="/support.html">Support</a><a href="/privacy.html">Privacy</a></nav>
+</div></header>
+
+<main class="wrap">
+<h1>Support</h1>
+<p class="lede">Most problems are one of three things: pairing, reaching your computer from elsewhere, or notifications. Start here.</p>
+
+<div class="card">
+<p><strong>Email:</strong> <a href="mailto:support@kiteagent.app">support@kiteagent.app</a></p>
+<p>If you write in about a connection problem, open <strong>Settings → Connection log</strong> in Kite, tap <strong>Copy all</strong>, and paste it into your message. It records which address the app tried and what came back, and it usually identifies the problem outright.</p>
+</div>
+
+<h2>Getting started</h2>
+<ol>
+  <li>Install <strong>Kite Helper</strong> on the Mac that runs your agent, and leave it running in the menu bar.</li>
+  <li>Open Kite on your phone and tap <strong>Pair with your Mac</strong>.</li>
+  <li>Scan the code shown by Kite Helper.</li>
+</ol>
+<p>That is the whole setup. There is no account, no server address to type, and no port forwarding.</p>
+
+<h2>The dot is red</h2>
+
+<h3>On the same wi-fi</h3>
+<ul>
+  <li>Check Kite Helper is still running on your Mac, and that the Mac is awake.</li>
+  <li>Confirm both devices are on the same network. A phone on a guest network, or on a different band that the router isolates, cannot reach your Mac.</li>
+  <li>In Kite, go to <strong>Settings → Find it again</strong>. If your Mac’s address changed, this finds it.</li>
+</ul>
+
+<h3>Away from home</h3>
+<p>Kite reaches your Mac from elsewhere over a private network such as <a href="https://tailscale.com">Tailscale</a>. Both devices need it installed and signed in to the same account. Check <strong>Settings → Your Mac</strong>: if it says <em>“Only works on your wi-fi”</em>, your pairing has no away-from-home address — scan the code in Kite Helper again to add one.</p>
+
+<div class="card">
+<p><strong>⚠️ If you use a firewall such as Little Snitch</strong>, it may silently block incoming connections to Kite Helper, with no prompt and no visible error. Everything works at home and nothing works away from it.</p>
+<p>The fix is one rule: allow <strong>incoming TCP</strong> to <code>Kite Helper</code> on its listening port, from your local network <em>and</em> from <code>100.64.0.0/10</code> — the range private networks like Tailscale use. A rule limited to one address will break when that address changes.</p>
+</div>
+
+<h2>Notifications</h2>
+<p>Kite can tell you when your agent finishes a reply while your phone is away.</p>
+<ul>
+  <li>If nothing arrives, check <strong>iOS Settings → Notifications → Kite</strong> and make sure <strong>Notification Center</strong> is switched on — it is separate from Lock Screen and Banners, and with it off notifications vanish after the banner instead of being kept.</li>
+  <li>Set <strong>Banner Style → Persistent</strong> if you want banners to stay until you dismiss them. Apps cannot set this for you.</li>
+  <li>If you wear an Apple Watch and your phone is locked, notifications go to the watch instead. That is iOS behaviour, not a Kite setting.</li>
+</ul>
+
+<h2>Why did another model answer?</h2>
+<p>When you connect directly to a provider, Kite asks for the model you chose and lists one or two alternates. If your model is busy — free models are often heavily used — the provider answers with the next one instead, and Kite tells you which. You get a reply rather than an error, and it is always labelled.</p>
+
+<h2>Why don’t I see what my agent is doing?</h2>
+<p>Kite shows your agent’s steps as it works — searching, reading, running a command. If you <em>edit</em> a message in a thread, that thread detaches from your agent’s own copy of the conversation, and its steps stop appearing there. The thread still works. New conversations are unaffected, and Kite says so at the bottom of an edited thread.</p>
+
+<h2>Requirements</h2>
+<ul>
+  <li>iPhone or iPad running a current version of iOS.</li>
+  <li>A Mac running your agent, with Kite Helper installed.</li>
+  <li>For access away from home: a private network such as Tailscale on both devices.</li>
+</ul>
+
+<h2>Still stuck</h2>
+<p>Write to <a href="mailto:support@kiteagent.app">support@kiteagent.app</a> with the connection log and a note of what you were doing. Include whether you were at home or away, and whether the agent works from your Mac itself.</p>
+</main>
+
+<footer><div class="wrap">© 2026 RedPixl s.r.o. · <a href="/support.html">Support</a> · <a href="/privacy.html">Privacy</a></div></footer>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy — Kite Agent</title>
+<meta name="description" content="What Kite Agent does and does not collect. No analytics, no tracking, and your conversations never touch our servers.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><div class="wrap">
+  <a class="mark" href="/">Kite Agent</a>
+  <nav><a href="/support.html">Support</a><a href="/privacy.html">Privacy</a></nav>
+</div></header>
+
+<main class="wrap">
+<h1>Privacy Policy</h1>
+<p class="lede">Kite Agent is a client for an AI agent that runs on your own computer. Your conversations stay between your phone and your machine.</p>
+<p class="updated">Last updated: 14 August 2026</p>
+
+<div class="card">
+<p><strong>The short version.</strong> We operate no servers that your conversations pass through. We collect no analytics and use no tracking or advertising SDKs of any kind. Kite talks to your own computer, and — only if you explicitly choose to — to an AI provider that you select and hold your own account with.</p>
+</div>
+
+<h2>What Kite stores, and where</h2>
+<p>Everything below is stored <em>on your device</em>. None of it is transmitted to us, because there is no “us” to transmit it to — we run no backend for this app.</p>
+
+<table>
+<tr><th>What</th><th>Why it exists</th></tr>
+<tr><td>The address of your computer and a pairing token</td><td>So the app can reach the agent you paired with. The token is issued by the helper app on your Mac and can be revoked there.</td></tr>
+<tr><td>Your model and connection preferences</td><td>So the app remembers how you like to work.</td></tr>
+<tr><td>A cached list of your conversation titles</td><td>So the list still shows something when your computer is unreachable.</td></tr>
+<tr><td>An API key, only if you use “connect directly to a model”</td><td>It is sent only to the provider you chose, to authenticate you. We never see it.</td></tr>
+</table>
+
+<p>Your conversations themselves live on <strong>your own computer</strong>, held by the agent software you run. Kite displays them; it does not copy them anywhere else.</p>
+
+<h2>Where your messages actually go</h2>
+<ul>
+  <li><strong>Agent mode</strong> — messages go to the helper app on your own computer, over your local network or your own private network (such as Tailscale). They do not pass through any server of ours.</li>
+  <li><strong>Direct mode</strong> — if you choose to connect straight to an AI provider instead, your messages go to that provider under your own account, subject to <em>their</em> privacy policy. Kite adds nothing to that exchange.</li>
+</ul>
+
+<h2>Notifications</h2>
+<p>If you enable notifications, Kite can tell you when your agent has replied. Those notifications are sent through Apple’s Push Notification service and <strong>contain no message content</strong> — only the fact that a reply arrived. The text of the reply is fetched by the app directly from your own computer.</p>
+<p>Apple receives a device token in order to deliver the notification, as it does for every app that uses notifications.</p>
+
+<h2>Photos, documents and files</h2>
+<p>When you attach a photo or a PDF, Kite processes it <strong>on your device</strong> — including reading text from a scanned document — and sends the result to your own agent. Nothing is uploaded to us at any point.</p>
+
+<h2>What we do not do</h2>
+<ul>
+  <li>No analytics, usage statistics, crash reporting SDKs, or A/B testing.</li>
+  <li>No advertising identifiers, tracking pixels, fingerprinting, or third-party SDKs of any kind.</li>
+  <li>No account, no sign-up, no email address required to use the app.</li>
+  <li>No selling or sharing of personal data, because none is collected.</li>
+</ul>
+
+<h2>Children</h2>
+<p>Kite Agent is a developer tool and is not directed at children under 13. We do not knowingly collect information from anyone, of any age.</p>
+
+<h2>Your data rights</h2>
+<p>Under the GDPR and similar laws you have rights to access, correct, export and erase personal data held about you. We hold none — there is no account and no server-side record to request. Data held on your device is removed by deleting the app; the pairing can be revoked at any time from Kite Helper on your computer.</p>
+
+<h2>Changes</h2>
+<p>If this policy changes in a way that affects what leaves your device, the date at the top will change and the previous version will remain available on request.</p>
+
+<h2>Contact</h2>
+<p>Questions about this policy, or about privacy in Kite Agent:<br>
+<a href="mailto:support@kiteagent.app">support@kiteagent.app</a></p>
+<p class="updated">Kite Agent is developed by RedPixl s.r.o., Czech Republic.</p>
+</main>
+
+<footer><div class="wrap">© 2026 RedPixl s.r.o. · <a href="/support.html">Support</a> · <a href="/privacy.html">Privacy</a></div></footer>
+</body>
+</html>
