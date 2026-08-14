@@ -32,7 +32,15 @@ h2 { font-size: 1.15rem; margin: 2.2rem 0 .6rem; letter-spacing: -.01em; }
 h3 { font-size: 1rem; margin: 1.4rem 0 .4rem; }
 p, li { color: var(--ink); }
 .lede { font-size: 1.12rem; color: var(--muted); margin: 0 0 2rem; }
-.updated { color: var(--muted); font-size: .9rem; margin: 0 0 2.5rem; }
+/* Centred, because it sits directly under the centred icon and wordmark —
+   left-aligning it there reads as a mistake rather than a choice. */
+.updated {
+  color: var(--muted);
+  font-size: .9rem;
+  margin: 0 auto 2.5rem;
+  text-align: center;
+  max-width: 46ch;
+}
 a { color: var(--accent); }
 ul { padding-left: 1.15rem; }
 li { margin: .35rem 0; }
