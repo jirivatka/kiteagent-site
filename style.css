@@ -68,3 +68,21 @@ footer .wrap { padding: 1.5rem 1.25rem; }
   margin-top: .5rem;
   max-width: 60ch;
 }
+
+/* The icon at a size where it reads as a product, near the end where someone
+   has finished reading and is deciding whether they want it. */
+.hero-mark {
+  text-align: center;
+  margin: 3.5rem 0 2rem;
+}
+.hero-mark img {
+  border-radius: 22%;
+  box-shadow: 0 8px 28px rgb(0 0 0 / .18);
+  max-width: 40vw;
+  height: auto;
+}
+.hero-mark p {
+  margin-top: .9rem;
+  font-weight: 600;
+  letter-spacing: -.01em;
+}
