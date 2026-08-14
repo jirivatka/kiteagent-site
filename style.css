@@ -60,3 +60,11 @@ footer .wrap { padding: 1.5rem 1.25rem; }
   border-radius: 22%;
   display: block;
 }
+
+/* Attribution line. Deliberately quiet — it is a legal necessity, not a claim. */
+.fineprint {
+  font-size: .8rem;
+  opacity: .65;
+  margin-top: .5rem;
+  max-width: 60ch;
+}
