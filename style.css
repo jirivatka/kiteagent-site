@@ -104,7 +104,10 @@ footer .wrap { padding: 1.5rem 1.25rem; }
    auto-fit does the responsive work without media queries. */
 .shots {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  /* Three across, not auto-fit. auto-fit packed four into the row and
+     orphaned two, which reads as a mistake; six in two rows of three is
+     balanced. Two columns below 520px, where three would be unreadably narrow. */
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.25rem 1rem;
   margin: 2rem 0 2.5rem;
   max-width: 720px;
@@ -124,4 +127,8 @@ footer .wrap { padding: 1.5rem 1.25rem; }
   opacity: .7;
   text-align: center;
   line-height: 1.3;
+}
+
+@media (max-width: 520px) {
+  .shots { grid-template-columns: repeat(2, 1fr); }
 }
