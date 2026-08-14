@@ -1,0 +1,30 @@
+[Unit]
+Description=Kite Helper — pairs a phone with a self-hosted Hermes agent
+After=network-online.target tailscaled.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=%i
+WorkingDirectory=%h
+Environment=KITE_HELPER_HOME=%h/.kite-helper
+# The gateway key is read from ~/.hermes/.env if not set here.
+# Environment=KITE_GATEWAY_KEY=
+ExecStart=/usr/bin/python3 %h/kite-helper.py --gateway 127.0.0.1:8642 --port 50746
+Restart=always
+RestartSec=5
+
+# It holds a key that grants terminal access to this machine, so give it as
+# little as the job needs.
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ReadWritePaths=%h/.kite-helper
+ProtectKernelTunables=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_INET AF_INET6
+MemoryMax=128M
+CPUWeight=30
+
+[Install]
+WantedBy=multi-user.target

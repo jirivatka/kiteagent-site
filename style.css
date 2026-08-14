@@ -132,3 +132,16 @@ footer .wrap { padding: 1.5rem 1.25rem; }
 @media (max-width: 520px) {
   .shots { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* Command blocks. The download page is the only place the site asks anyone to
+   type something, so this is the one place monospace earns its keep. */
+pre {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: .9rem 1rem;
+  overflow-x: auto;
+  font-size: .85rem;
+  line-height: 1.5;
+}
+pre code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
