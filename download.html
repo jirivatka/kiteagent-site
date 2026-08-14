@@ -14,7 +14,7 @@
 <link rel="icon" href="/favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta name="theme-color" content="#E4552F">
-<link rel="stylesheet" href="style.css?v=eb7eba95">
+<link rel="stylesheet" href="style.css?v=50647c15">
 </head>
 <body>
 <header><div class="wrap">
@@ -44,9 +44,11 @@ sudo systemctl enable --now kite-helper@$USER</code></pre>
 <p><a href="/downloads/kite-helper.py">Download kite-helper.py</a> · <a href="https://github.com/jirivatka/Kite-Agent-Support/discussions">Ask a question</a></p>
 
 <h2>On a Mac</h2>
+<p>A small menu-bar app. It finds your agent, shows a pairing code, and otherwise stays out of the way.</p>
+<p><a class="download" href="/downloads/KiteHelper.dmg">Download Kite Helper</a> <span class="meta">379 KB · macOS 14 or later · signed and notarised by Apple</span></p>
+<p class="meta">SHA-256 <code>e3bc847a1a305b8fc6cae6b6e3740f20e102311d433fed6023f4ca464ee76389</code></p>
 <div class="card">
-<p><strong>Coming with the app.</strong> The Mac helper is a small menu-bar app that finds your agent, shows a pairing code, and stays out of the way.</p>
-<p>It is deliberately not on the Mac App Store: it reads your agent's own configuration and connects to a service it did not start, and sandboxed apps may do neither — which is the whole point of it. So it ships signed and notarised from here instead, alongside the App Store release.</p>
+<p><strong>Why it is not on the Mac App Store.</strong> Kite Helper reads your agent's own configuration and connects to a service it did not start. Sandboxed apps may do neither, and both are exactly what it is for — so it ships signed and notarised from here instead. macOS will verify it with Apple on first launch and open it without a warning.</p>
 </div>
 
 <h2>Which machine should run my agent?</h2>
