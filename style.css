@@ -48,3 +48,15 @@ th { color: var(--muted); font-weight: 600; font-size: .88rem; }
 code { font-size: .92em; background: var(--surface); padding: .1em .35em; border-radius: 4px; }
 footer { border-top: 1px solid var(--line); color: var(--muted); font-size: .9rem; }
 footer .wrap { padding: 1.5rem 1.25rem; }
+
+/* Wordmark: icon plus name. The icon carries the identity in a browser tab and
+   on a home screen, where a text mark is invisible. */
+.mark {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+}
+.mark img {
+  border-radius: 22%;
+  display: block;
+}
