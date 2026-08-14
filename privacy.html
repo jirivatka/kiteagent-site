@@ -29,7 +29,7 @@
 <p class="updated">Last updated: 14 August 2026</p>
 
 <div class="card">
-<p><strong>The short version.</strong> We operate no servers that your conversations pass through. We collect no analytics and use no tracking or advertising SDKs of any kind. Kite talks to your own computer, and — only if you explicitly choose to — to an AI provider that you select and hold your own account with.</p>
+<p><strong>The short version.</strong> We operate no servers that your conversations pass through. <strong>The app</strong> collects no analytics and uses no tracking or advertising SDKs of any kind. Kite talks to your own computer, and — only if you explicitly choose to — to an AI provider that you select and hold your own account with. <strong>This website</strong> counts page views, described below.</p>
 </div>
 
 <h2>What Kite stores, and where</h2>
@@ -50,6 +50,16 @@
   <li><strong>Agent mode</strong> — messages go to the helper app on your own computer, over your local network or, away from home, over your own private network. They do not pass through any server of ours.</li>
   <li><strong>Direct mode</strong> — if you choose to connect straight to an AI provider instead, your messages go to that provider under your own account, subject to <em>their</em> privacy policy. Kite adds nothing to that exchange.</li>
 </ul>
+
+
+<h2>This website</h2>
+<p>The app and the website are separate, and it would be misleading to describe them together.</p>
+<ul>
+  <li><strong>The app collects nothing.</strong> No analytics, no crash reporting, no third-party SDKs — verified against the shipped binary, which links only Apple's own frameworks.</li>
+  <li><strong>This website uses Cloudflare Web Analytics</strong> to count page views. It sets <strong>no cookies</strong>, stores no identifier on your device, and cannot follow you to other sites. We see totals — which pages were viewed, roughly where from, which referrer — never individuals.</li>
+  <li>You can block it with any content blocker and the site works identically.</li>
+</ul>
+<p>We chose it over the usual alternatives precisely because it needs no cookie banner: there is nothing to consent to when nothing is stored on your device.</p>
 
 <h2>If you use Tailscale</h2>
 <p>To reach your computer when you are not on the same network, Kite uses a private network you set up yourself — in practice, Tailscale. This is worth being precise about, because it means a company other than us is involved.</p>
@@ -94,5 +104,7 @@
 <p>© 2026 RedPixl s.r.o. · <a href="/">Home</a> · <a href="/support.html">Support</a></p>
 <p class="fineprint">Kite Agent is an independent client. It is not affiliated with, endorsed by, or sponsored by Nous Research.</p>
 </div></footer>
+<!-- Cloudflare Web Analytics — cookieless, no cross-site tracking. See /privacy.html -->
+<script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "73a5990c2cba4c96b40e4c8363a0e0a8"}'></script>
 </body>
 </html>
