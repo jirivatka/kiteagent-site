@@ -41,8 +41,17 @@
 
 <h2>Where your messages actually go</h2>
 <ul>
-  <li><strong>Agent mode</strong> — messages go to the helper app on your own computer, over your local network or your own private network (such as Tailscale). They do not pass through any server of ours.</li>
+  <li><strong>Agent mode</strong> — messages go to the helper app on your own computer, over your local network or, away from home, over your own private network. They do not pass through any server of ours.</li>
   <li><strong>Direct mode</strong> — if you choose to connect straight to an AI provider instead, your messages go to that provider under your own account, subject to <em>their</em> privacy policy. Kite adds nothing to that exchange.</li>
+</ul>
+
+<h2>If you use Tailscale</h2>
+<p>To reach your computer when you are not on the same network, Kite uses a private network you set up yourself — in practice, Tailscale. This is worth being precise about, because it means a company other than us is involved.</p>
+<ul>
+  <li><strong>We do not bundle, operate or require it.</strong> You install it, you hold the account, and you can remove it. Kite has no relationship with Tailscale and sends them nothing.</li>
+  <li><strong>Your traffic is encrypted between your devices.</strong> Tailscale builds a WireGuard tunnel from your phone to your computer. When the two cannot reach each other directly, encrypted traffic is relayed through Tailscale’s servers — they carry it, they cannot read it.</li>
+  <li><strong>They see connection metadata, not content.</strong> Which of your devices are online and connecting, under their own <a href="https://tailscale.com/privacy-policy">privacy policy</a>, not ours.</li>
+  <li><strong>You can avoid it entirely.</strong> On your own wi-fi Kite talks to your computer directly with nothing in between. Tailscale only matters when you are elsewhere.</li>
 </ul>
 
 <h2>Notifications</h2>
