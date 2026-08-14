@@ -95,39 +95,33 @@ footer .wrap { padding: 1.5rem 1.25rem; }
   letter-spacing: -.01em;
 }
 
-/* Screenshots.
-   A scrolling strip rather than a grid: four phone screens stacked into a grid
-   on a narrow display become four tiny unreadable images, while a strip keeps
-   each one at a legible size and lets the reader move along it. Scroll snapping
-   stops it landing between two. */
+
+/* Screenshots — a grid, not a strip.
+   A horizontal strip hides everything past the first two: people do not reliably
+   scroll sideways, so four screenshots become two. A grid shows all six at once.
+   The cost is size on a phone, where three columns become two — worth it, because
+   recognising the shape of six screens beats reading one and missing the rest.
+   auto-fit does the responsive work without media queries. */
 .shots {
-  display: flex;
-  gap: 1rem;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  padding: .5rem 0 1.25rem;
-  margin: 2rem 0 1rem;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1.25rem 1rem;
+  margin: 2rem 0 2.5rem;
+  max-width: 720px;
 }
-.shots figure {
-  flex: 0 0 auto;
-  margin: 0;
-  scroll-snap-align: center;
-  width: 276px;
-  max-width: 68vw;
-}
+.shots figure { margin: 0; }
 .shots img {
   width: 100%;
   height: auto;
-  border-radius: 18px;
+  border-radius: 14px;
   border: 1px solid rgb(0 0 0 / .10);
-  box-shadow: 0 6px 22px rgb(0 0 0 / .12);
+  box-shadow: 0 4px 16px rgb(0 0 0 / .10);
   display: block;
 }
 .shots figcaption {
-  margin-top: .6rem;
-  font-size: .85rem;
+  margin-top: .5rem;
+  font-size: .8rem;
   opacity: .7;
   text-align: center;
+  line-height: 1.3;
 }
