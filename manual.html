@@ -39,6 +39,8 @@
 <a href="#pairing">Pairing</a> ·
 <a href="#models">Choosing a model</a> ·
 <a href="#using">Everyday use</a> ·
+<a href="#connections">More than one machine</a> ·
+<a href="#siri">Siri</a> ·
 <a href="#notifications">Notifications</a> ·
 <a href="#trouble">When something goes wrong</a> ·
 <a href="#privacy">What leaves your devices</a></p>
@@ -55,6 +57,7 @@
 <h2 id="model">Talking to a model</h2>
 <p>Settings → <strong>Connect to</strong> → <strong>A model directly</strong>. The endpoint is a plain text field and the API key is optional, which is what makes both of these possible:</p>
 <ul>
+  <li><strong>A model on your own machine.</strong> Settings → <strong>Find models on my network</strong> looks for Ollama, LM Studio, llama.cpp or Jan on your wi-fi and fills in everything — address, port and model. No key, because a server on your own network does not ask for one. Ollama needs <code>OLLAMA_HOST</code> set to be reachable from anything but the machine it runs on.</li>
   <li><strong>A hosted provider.</strong> Buttons fill in OpenRouter and Nous Portal; any other OpenAI-compatible service works by typing its base URL — Groq, Together, DeepInfra and so on. Paste your key, pick a model.</li>
   <li><strong>A model on your own computer.</strong> Point it at <code>http://&lt;address&gt;:11434/v1</code> for Ollama, or LM Studio's server address, and leave the key blank.</li>
 </ul>
@@ -105,6 +108,11 @@ bash install-hermes-server.sh</code></pre>
 <p>This means a Mac agent works on your home wifi with no Tailscale at all. Away from home you need it — there is no other route.</p>
 <p>If your Mac changes address — a new DHCP lease, or moving between wifi and a hotspot — Kite races both known addresses to find it again. If it ever cannot, re-scanning the QR always fixes it.</p>
 
+<h2 id="connections">More than one machine</h2>
+<p>Kite remembers every machine you connect it to. Settings → <strong>Connections</strong> lists them, and switching is one tap — no scanning, no re-pairing. Each keeps its own address, its own credential and its own chosen model, so moving between a Mac at home and a server elsewhere does not cost you a setup each time.</p>
+<p><strong>Adding a server needs no code at all.</strong> Settings → Connections → <strong>Add a machine by address</strong>, then type its name on your tailnet — <code>vps4129</code>, or its address. The machine hands the phone what it needs once it can see you are on the tailnet, which is a stronger check than a code copied off a screen. That is also the only way to pair a machine with no screen to show a code on.</p>
+<p><strong>Add a machine by address works for a Mac too</strong>, which matters when you are not sitting in front of it. Scanning the code is still there when you are.</p>
+
 <h2 id="models">Choosing a model</h2>
 <p><strong>Using a model on your own machine.</strong> Point the endpoint at it and leave the key blank — for Ollama that is <code>http://&lt;address&gt;:11434/v1</code>. ⚠️ Ollama listens only on <code>127.0.0.1</code> by default, so start it bound to an address your phone can reach: <code>OLLAMA_HOST=&lt;your-tailnet-address&gt;:11434 ollama serve</code>. Binding it to <code>0.0.0.0</code> instead would expose it to every device on whatever network you are on, and Ollama has no authentication at all.</p>
 <p>Kite lists whatever you are connected to — your agent's models, or your provider's, or the ones on your own machine — with free ones badged. Your choice is locked to each conversation, so a thread keeps answering with the model it started with.</p>
@@ -122,6 +130,14 @@ bash install-hermes-server.sh</code></pre>
   <li><strong>Pick up anywhere.</strong> With an agent, conversations live on it, so your desktop and terminal see the same threads. Talking to a model directly, they live on the phone and nowhere else — the list shows them under <em>On this phone</em>.</li>
 </ul>
 <p>⚠️ Each agent keeps its <em>own</em> conversations. Pairing with a different one shows you that agent's threads, not a merged list — nothing syncs between two agents.</p>
+
+<p>While an agent works, each step appears as its own row — a search, a command, a file read. <strong>Tap a row and it shows what was actually asked for</strong>: the command, the path, the URL. Collapsed it stays out of the way; open it is evidence rather than a claim.</p>
+
+<h2 id="siri">Siri and Shortcuts</h2>
+<p>Kite answers Siri without opening. Say <strong>“Ask Kite”</strong>, then your question; it goes to whichever connection Kite is currently pointed at, waits for the reply, and Siri reads it out. Ask your agent whether the build passed while you are walking to the car, and you never touch the phone.</p>
+<p><strong>“Send to Kite”</strong> is the other half: it hands the message over and returns immediately, which is right for anything long. The run continues on your machine and the reply arrives as a notification.</p>
+<p>Both appear in the Shortcuts app under Kite, so you can put them in an automation, on the Home Screen, or on the Action button. “Ask Kite” returns the reply as text, so a shortcut can send it on somewhere — into a note, a message, anything.</p>
+<p class="note">The spoken answer is trimmed to something Siri can sensibly read. A shortcut receives the whole reply, however long.</p>
 
 <h2 id="notifications">Notifications and the Lock Screen</h2>
 <p>A long task tells you when it is done, and a Live Activity shows what it is doing while you wait.</p>
