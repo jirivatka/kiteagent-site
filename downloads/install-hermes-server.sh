@@ -120,8 +120,9 @@ offer_nous_login() {
   read -r answer </dev/tty || answer="n"
   case "${answer:-y}" in
     [Nn]*)
-      warn "Skipped. Run this later, on this machine:"
-      warn "  hermes portal login --no-browser"
+      warn "Skipped. Run this later, as the user the agent runs as:"
+      warn "  su - $(id -un) -c 'hermes portal login --no-browser'"
+      warn "(from root; this box may have no sudo)"
       return 0
       ;;
   esac
@@ -324,7 +325,8 @@ done
 if [ "$PROVIDER_COUNT" -le 1 ]; then
   warn "Only one provider. When its allowance runs out this agent stops"
   warn "answering, and the app will show rate-limit errors rather than a fault."
-  warn "Add another with:  hermes portal login --no-browser"
+  warn "Add another, as this user:"
+  warn "  su - $(id -un) -c 'hermes portal login --no-browser'"
 fi
 
 pkill -f "hermes gateway" 2>/dev/null || true
