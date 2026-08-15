@@ -105,8 +105,15 @@ fi
 #
 # Nous Portal is not a key and cannot arrive in an .env: it is an OAuth login.
 # `--no-browser` prints a URL to open on any device, so a headless box can do it.
+# ⚠️ Always the venv binary, never a bare `hermes`.
+#
+# This script installs into a virtualenv, so `hermes` is not on anyone's PATH —
+# and every hint that said otherwise failed on the machine this script had just
+# built. Three round trips were spent discovering that from the outside.
+hermes_bin() { printf '%s' "$BASE/hermes-agent/venv/bin/hermes"; }
+
 offer_nous_login() {
-  command -v hermes >/dev/null 2>&1 || return 0
+  [ -x "$(hermes_bin)" ] || return 0
   if [ -f "$HOME/.hermes/shared/nous_auth.json" ]; then
     ok "Nous Portal is already logged in here"
     return 0
@@ -120,15 +127,15 @@ offer_nous_login() {
   read -r answer </dev/tty || answer="n"
   case "${answer:-y}" in
     [Nn]*)
-      warn "Skipped. Run this later, as the user the agent runs as:"
-      warn "  su - $(id -un) -c 'hermes portal login --no-browser'"
-      warn "(from root; this box may have no sudo)"
+      warn "Skipped. Run this later — from root, since this box may have no sudo:"
+      warn "  su - $(id -un) -c '$(hermes_bin) portal login --no-browser'"
       return 0
       ;;
   esac
   echo "  A URL will be printed — open it on your phone or laptop, then come back."
   # Never fatal: a machine with one working provider is still a working machine.
-  hermes portal login --no-browser </dev/tty || warn "Nous login did not complete — you can run it later with: hermes portal login --no-browser"
+  "$(hermes_bin)" portal login --no-browser </dev/tty \
+    || warn "Nous login did not complete. Run it later with the command below."
 }
 offer_nous_login
 
@@ -325,8 +332,8 @@ done
 if [ "$PROVIDER_COUNT" -le 1 ]; then
   warn "Only one provider. When its allowance runs out this agent stops"
   warn "answering, and the app will show rate-limit errors rather than a fault."
-  warn "Add another, as this user:"
-  warn "  su - $(id -un) -c 'hermes portal login --no-browser'"
+  warn "Add another — from root, since this box may have no sudo:"
+  warn "  su - $(id -un) -c '$(hermes_bin) portal login --no-browser'"
 fi
 
 pkill -f "hermes gateway" 2>/dev/null || true
