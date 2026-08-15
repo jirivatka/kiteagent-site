@@ -353,8 +353,19 @@ class Helper:
 
         # The phone went away with a run in flight: notify when it finishes.
         session = self._streaming_session(line)
+        # ⚠️ Say what was decided, every time.
+        #
+        # This branch was silent, so "no push arrived" could mean the client
+        # never left first, or no session id was parsed, or the watcher ran for
+        # five minutes and saw nothing — three unrelated faults with identical
+        # evidence. An evening was spent unable to tell them apart.
         if client_first and session:
+            print(f"  client left mid-run — watching {session}", flush=True)
             asyncio.create_task(self._watch_and_notify(session))
+        elif client_first:
+            print("  client left mid-run but no session id — cannot notify", flush=True)
+        elif session:
+            print(f"  run finished before the client left ({session}) — no push needed", flush=True)
 
     async def _pipe_both(self, c_reader, c_writer, u_reader, u_writer) -> bool:
         """Returns True when the CLIENT side ended first — a suspended phone."""
@@ -473,6 +484,7 @@ class Helper:
         so this only has to watch for the transcript to grow."""
         baseline = await self._message_count(session_id)
         if baseline is None:
+            print(f"  cannot count messages on {session_id} — giving up", flush=True)
             return
         deadline = time.time() + 300
         while time.time() < deadline:
@@ -486,6 +498,8 @@ class Helper:
                 # long after the reply has arrived and been notified.
                 await self._end_activity(session_id)
                 return
+        # Five minutes with no new message. Better said than left as silence.
+        print(f"  no reply appeared on {session_id} within 5 minutes", flush=True)
 
     async def _message_count(self, session_id: str) -> int | None:
         try:
