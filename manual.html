@@ -77,8 +77,8 @@
 <li><strong>Your own machine, anywhere else:</strong> needs it. There is no other route to your Mac from a café or a train — that applies to a local model just as much as to an agent.</li>
 <li><strong>A server, always:</strong> needs it. Your phone is never on the same network as a server.</li>
 </ul>
-<p><a href="https://tailscale.com/download">Tailscale</a> is free for personal use, takes a few minutes, and needs installing on <em>both</em> your phone and the machine running your agent — signed into the same account, so they can see each other.</p>
-<p>⚠️ The alternative — exposing your agent to the internet — is a bad trade. Your agent can run commands on the machine it lives on, so a single leaked token would be a shell on your Mac or your server. Kite is built assuming you will not do this.</p>
+<p><a href="https://tailscale.com/download">Tailscale</a> is free for personal use, takes a few minutes, and needs installing on <em>both</em> your phone and the machine you are reaching — signed into the same account, so they can see each other.</p>
+<p>⚠️ The alternative — opening your machine to the internet — is a bad trade either way. An agent can run commands on the machine it lives on, so a leaked token is a shell on your Mac or your server; a local model server such as Ollama has no authentication at all, so anyone who reaches it can use it. Kite is built assuming you will not do this.</p>
 </div>
 
 <h2 id="mac">An agent on your Mac</h2>
@@ -107,9 +107,9 @@ bash install-hermes-server.sh</code></pre>
 
 <h2 id="models">Choosing a model</h2>
 <p><strong>Using a model on your own machine.</strong> Point the endpoint at it and leave the key blank — for Ollama that is <code>http://&lt;address&gt;:11434/v1</code>. ⚠️ Ollama listens only on <code>127.0.0.1</code> by default, so start it bound to an address your phone can reach: <code>OLLAMA_HOST=&lt;your-tailnet-address&gt;:11434 ollama serve</code>. Binding it to <code>0.0.0.0</code> instead would expose it to every device on whatever network you are on, and Ollama has no authentication at all.</p>
-<p>Kite shows what your agent offers, with free models badged. Your choice is locked to each conversation, so a thread keeps answering with the model it started with.</p>
+<p>Kite lists whatever you are connected to — your agent's models, or your provider's, or the ones on your own machine — with free ones badged. Your choice is locked to each conversation, so a thread keeps answering with the model it started with.</p>
 <div class="card">
-<p><strong>⚠️ Free models run out faster than you expect.</strong> Every step your agent takes is a separate request — one question that reads a few files can be twenty — and a free key's daily allowance is small.</p>
+<p><strong>⚠️ Free models run out faster than you expect.</strong> In plain chat one message is one request, but <em>every step an agent takes is its own request</em> — one question that reads a few files can be twenty — and a free key's daily allowance is small.</p>
 <p>When it runs out you will see <code>429 rate limit exceeded: free-models-per-day</code>. The allowance resets at midnight UTC. Adding 10 credits at your provider raises it to 1,000 requests a day, and you carry on using free models.</p>
 </div>
 <p>⚠️ <strong>If you pair with a different agent, check your model.</strong> Agents are configured differently — a model your Mac can serve may not exist on your server. Kite switches you to something the new agent offers, but only when the model is genuinely absent, not when it is present and out of quota.</p>
@@ -143,7 +143,7 @@ bash install-hermes-server.sh</code></pre>
 
 <h3>A red dot, or “couldn't reach your agent”</h3>
 <ul>
-  <li>Is the machine awake and the agent running?</li>
+  <li>Is the machine awake, and the thing you are talking to actually running — the agent, or your local model server?</li>
   <li>Away from home — is Tailscale on, on both the phone and the machine?</li>
   <li>On a guest wifi network? Many routers stop devices seeing each other.</li>
   <li>Still stuck: re-scan the pairing QR. It always resets the address.</li>
@@ -157,7 +157,7 @@ bash install-hermes-server.sh</code></pre>
 
 <h2 id="privacy">What leaves your devices</h2>
 <ul>
-  <li><strong>Conversations stay on your agent</strong>, in its own database on your machine. There is no account and no sign-up.</li>
+  <li><strong>Conversations stay where you put them.</strong> With an agent, in its own database on your machine; talking to a model directly, on the phone and nowhere else. There is no account and no sign-up.</li>
   <li><strong>Your messages go to whichever model provider you chose</strong>, under your own key. Local storage, remote inference — worth being clear-eyed about.</li>
   <li><strong>Your agent's key never reaches your phone.</strong> The helper holds it; your phone gets a pairing token, revocable on its own.</li>
   <li><strong>Notifications carry no message content</strong> — only that a reply arrived. Your phone then fetches it over your own private network. This is the one part that involves a server of ours: waking an iPhone needs a signing key that cannot be given out, so a small relay holds it and is sent your notification token and nothing else, kept for 90 days and refreshed whenever you open the app.</li>
