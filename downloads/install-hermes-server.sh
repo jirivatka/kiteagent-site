@@ -311,6 +311,22 @@ ok "helper reaches the agent end to end"
 
 # --------------------------------------------------------------------- pairing
 
+say "About the model this is set to use"
+cat <<'EOF'
+  It defaults to a free model so it works as soon as you have a key.
+
+  ⚠️ Every step your agent takes is a separate request — one question that reads a
+  few files can be twenty — and a free OpenRouter key has a small daily allowance.
+  A day of ordinary use will exhaust it, and you will get:
+
+    429 Rate limit exceeded: free-models-per-day
+
+  Adding 10 credits raises the free allowance to 1000 requests a day; you keep
+  using free models. The counter resets at 00:00 UTC.
+
+  Set KITE_DEFAULT_MODEL before running this to choose something else.
+EOF
+
 say "Pair your phone"
 LINK=$(grep -o 'kite-pair:[^ ]*' "$BASE/helper.log" | head -1)
 REACH=$(grep -o 'Reachable at [^ ]*' "$BASE/helper.log" | head -1 | awk '{print $3}')

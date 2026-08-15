@@ -50,6 +50,10 @@ sudo systemctl enable --now kite-helper@$USER</code></pre>
 bash install-hermes-server.sh</code></pre>
 <p>Then put your OpenRouter key in <code>~/.hermes/.env</code> and start it with <code>~/kite-hermes/run-agent.sh</code>.</p>
 <div class="card">
+<p><strong>About free models.</strong> The installer picks a free model so it works the moment you have a key. Be aware what that buys: an OpenRouter key with no credits has a small daily allowance, and <em>every step your agent takes is a request</em> — one question that reads a few files can be twenty. A day of ordinary use will exhaust it.</p>
+<p>When it runs out you get <code>429 Rate limit exceeded: free-models-per-day</code>. OpenRouter's own remedy is to add 10 credits, which raises the free-model allowance to 1,000 requests a day — you keep using free models, the credits just unlock the higher tier. The counter resets daily at 00:00 UTC.</p>
+</div>
+<div class="card">
 <p><strong>Two things that will waste your afternoon otherwise.</strong> The agent must be started with <code>hermes gateway</code> — not <code>hermes serve</code>, which is the desktop dashboard's backend. Both answer on <code>/api/sessions</code>, so picking the wrong one gives you a server that looks right and returns <code>405</code> to every message.</p>
 <p>And <code>aiohttp</code> is not installed by default. Without it the agent starts, logs <em>“API Server: aiohttp not installed”</em>, binds no port, and does not exit — so it appears healthy while nothing can connect. The script above installs it.</p>
 </div>
