@@ -132,7 +132,16 @@ offer_nous_login() {
       return 0
       ;;
   esac
-  echo "  A URL will be printed — open it on your phone or laptop, then come back."
+  # ⚠️ Tell them the page that works.
+  #
+  # Hermes prints a /manage-subscription link carrying the code, and that page
+  # has no approve control — the login simply never completes and nothing says
+  # why. The device-code page is /device, which is in Hermes's own source and
+  # mentioned nowhere in its output. Two failed attempts were spent on this.
+  echo "  A code will be printed. Open this page and enter it:"
+  echo "      https://portal.nousresearch.com/device"
+  echo "  (NOT the manage-subscription link it prints — that page cannot approve.)"
+  echo "  Sign in to Nous Portal first, then come back here; it waits for you."
   # Never fatal: a machine with one working provider is still a working machine.
   # ⚠️ `auth add`, not `portal login`. `hermes portal` is the friendly alias but
   # takes NO options, so `portal login --no-browser` fails with "unrecognized
@@ -332,6 +341,21 @@ for pair in "ANTHROPIC_API_KEY:Anthropic" "DEEPSEEK_API_KEY:DeepSeek" "OPENAI_AP
     PROVIDER_COUNT=$((PROVIDER_COUNT + 1))
   fi
 done
+# ⚠️ Verify the Nous login rather than believing it.
+#
+# `hermes auth add nous --type api-key` exits 0, prints "Added nous credential",
+# and leaves the provider LOGGED OUT — Nous only accepts the OAuth session, and
+# nothing in that output says so. Ask Hermes what it actually thinks.
+if [ -f "$HOME/.hermes/shared/nous_auth.json" ]; then
+  NOUS_STATE=$("$(hermes_bin)" auth status nous 2>/dev/null | head -1)
+  case "$NOUS_STATE" in
+    *"logged out"*|"")
+      warn "Nous has a credential but reports: ${NOUS_STATE:-unknown}"
+      warn "Only an OAuth login counts for Nous. An API key is stored and ignored."
+      ;;
+  esac
+fi
+
 if [ "$PROVIDER_COUNT" -le 1 ]; then
   warn "Only one provider. When its allowance runs out this agent stops"
   warn "answering, and the app will show rate-limit errors rather than a fault."
