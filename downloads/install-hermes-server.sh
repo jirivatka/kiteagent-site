@@ -128,13 +128,16 @@ offer_nous_login() {
   case "${answer:-y}" in
     [Nn]*)
       warn "Skipped. Run this later — from root, since this box may have no sudo:"
-      warn "  su - $(id -un) -c '$(hermes_bin) portal login --no-browser'"
+      warn "  su - $(id -un) -c '$(hermes_bin) auth add nous --type oauth --no-browser'"
       return 0
       ;;
   esac
   echo "  A URL will be printed — open it on your phone or laptop, then come back."
   # Never fatal: a machine with one working provider is still a working machine.
-  "$(hermes_bin)" portal login --no-browser </dev/tty \
+  # ⚠️ `auth add`, not `portal login`. `hermes portal` is the friendly alias but
+  # takes NO options, so `portal login --no-browser` fails with "unrecognized
+  # arguments" — on a headless box the flag is the whole point.
+  "$(hermes_bin)" auth add nous --type oauth --no-browser </dev/tty \
     || warn "Nous login did not complete. Run it later with the command below."
 }
 offer_nous_login
@@ -333,7 +336,7 @@ if [ "$PROVIDER_COUNT" -le 1 ]; then
   warn "Only one provider. When its allowance runs out this agent stops"
   warn "answering, and the app will show rate-limit errors rather than a fault."
   warn "Add another — from root, since this box may have no sudo:"
-  warn "  su - $(id -un) -c '$(hermes_bin) portal login --no-browser'"
+  warn "  su - $(id -un) -c '$(hermes_bin) auth add nous --type oauth --no-browser'"
 fi
 
 pkill -f "hermes gateway" 2>/dev/null || true
