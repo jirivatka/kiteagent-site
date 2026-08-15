@@ -36,9 +36,7 @@
 <p>One file, Python 3.11 or newer, nothing to install. Run it beside your agent:</p>
 <pre><code>curl -O https://kiteagent.app/downloads/kite-helper.py
 python3 kite-helper.py --gateway 127.0.0.1:8642</code></pre>
-<p>It prints a pairing link — scan it with Kite, or paste it in. For notifications when a reply lands, add the sender beside it — it needs no packages, only <code>curl</code> and <code>openssl</code>:
-<pre><code>curl -O https://kiteagent.app/downloads/apns.py</code></pre>
-<p class="meta">Then put your APNs key in <code>~/.kite/apns.json</code> and check it with <code>python3 apns.py &lt;device-token&gt;</code>. Without it everything works except being told when a reply arrives.</p>
+<p>It prints a pairing link — scan it with Kite, or paste it in.</p>
 <p>To keep it running:</p>
 <pre><code>curl -O https://kiteagent.app/downloads/kite-helper.service
 sudo cp kite-helper.service /etc/systemd/system/kite-helper@.service
