@@ -95,6 +95,42 @@ if [ -z "${OPENROUTER_API_KEY:-}" ] && [ ! -f "$HOME/.hermes/.env" ]; then
   echo
 fi
 
+# ⚠️ One provider is not enough, and the failure is delayed.
+#
+# This script used to finish with a single OpenRouter key and say nothing about
+# it. That works until the free tier runs out — and then every message fails
+# with "rate limit exceeded", the model picker offers nothing that answers, and
+# the agent looks broken rather than out of allowance. It cost a whole testing
+# session to work out that the machine had only ever had one provider.
+#
+# Nous Portal is not a key and cannot arrive in an .env: it is an OAuth login.
+# `--no-browser` prints a URL to open on any device, so a headless box can do it.
+offer_nous_login() {
+  command -v hermes >/dev/null 2>&1 || return 0
+  if [ -f "$HOME/.hermes/shared/nous_auth.json" ]; then
+    ok "Nous Portal is already logged in here"
+    return 0
+  fi
+  say "A second provider (recommended)"
+  echo "  OpenRouter's free models have a daily cap. When it runs out the agent"
+  echo "  stops answering, which looks like a fault rather than an allowance."
+  echo "  Nous Portal is free to log into and gives this machine a fallback."
+  echo
+  printf "  Log in to Nous Portal now? [Y/n] "
+  read -r answer </dev/tty || answer="n"
+  case "${answer:-y}" in
+    [Nn]*)
+      warn "Skipped. Run this later, on this machine:"
+      warn "  hermes portal login --no-browser"
+      return 0
+      ;;
+  esac
+  echo "  A URL will be printed — open it on your phone or laptop, then come back."
+  # Never fatal: a machine with one working provider is still a working machine.
+  hermes portal login --no-browser </dev/tty || warn "Nous login did not complete — you can run it later with: hermes portal login --no-browser"
+}
+offer_nous_login
+
 # -------------------------------------------------------------------- source
 
 say "Installing the Hermes agent"
@@ -264,6 +300,31 @@ if grep -q "PUT_YOUR_KEY_HERE" "$HOME/.hermes/.env"; then
   warn "No API key set. Put one in ~/.hermes/.env, then run this script again."
   warn "Everything else is installed and ready."
   exit 0
+fi
+
+# Say what this machine can actually reach, by name. "Installed successfully"
+# while reachable by exactly one rate-limited provider is a half-truth.
+say "Providers this machine can use"
+PROVIDER_COUNT=0
+if ! grep -q "PUT_YOUR_KEY_HERE" "$HOME/.hermes/.env" && grep -q "^OPENROUTER_API_KEY=." "$HOME/.hermes/.env"; then
+  echo "  • OpenRouter        (free models are capped daily)"
+  PROVIDER_COUNT=$((PROVIDER_COUNT + 1))
+fi
+if [ -f "$HOME/.hermes/shared/nous_auth.json" ]; then
+  echo "  • Nous Portal"
+  PROVIDER_COUNT=$((PROVIDER_COUNT + 1))
+fi
+for pair in "ANTHROPIC_API_KEY:Anthropic" "DEEPSEEK_API_KEY:DeepSeek" "OPENAI_API_KEY:OpenAI"; do
+  var="${pair%%:*}"; label="${pair##*:}"
+  if grep -q "^${var}=." "$HOME/.hermes/.env" 2>/dev/null; then
+    echo "  • ${label}"
+    PROVIDER_COUNT=$((PROVIDER_COUNT + 1))
+  fi
+done
+if [ "$PROVIDER_COUNT" -le 1 ]; then
+  warn "Only one provider. When its allowance runs out this agent stops"
+  warn "answering, and the app will show rate-limit errors rather than a fault."
+  warn "Add another with:  hermes portal login --no-browser"
 fi
 
 pkill -f "hermes gateway" 2>/dev/null || true
