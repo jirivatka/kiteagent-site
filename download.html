@@ -43,6 +43,17 @@ sudo systemctl enable --now kite-helper@$USER</code></pre>
 <p><strong>You will also need a private path from your phone to the server</strong> — Tailscale is the simplest. Do not open the helper's port to the internet: a pairing token is all that stands between a caller and an agent that can run commands.</p>
 <p><a href="/downloads/kite-helper.py">Download kite-helper.py</a> · <a href="https://github.com/jirivatka/Kite-Agent-Support/discussions">Ask a question</a></p>
 
+<h3>No agent on the server yet?</h3>
+<p>Kite Helper connects your phone to an agent — it does not provide one. If the server has no Hermes on it, this installs it headless and writes a start script:</p>
+<pre><code>curl -O https://kiteagent.app/downloads/install-hermes-server.sh
+bash install-hermes-server.sh</code></pre>
+<p>Then put your OpenRouter key in <code>~/.hermes/.env</code> and start it with <code>~/kite-hermes/run-agent.sh</code>.</p>
+<div class="card">
+<p><strong>Two things that will waste your afternoon otherwise.</strong> The agent must be started with <code>hermes gateway</code> — not <code>hermes serve</code>, which is the desktop dashboard's backend. Both answer on <code>/api/sessions</code>, so picking the wrong one gives you a server that looks right and returns <code>405</code> to every message.</p>
+<p>And <code>aiohttp</code> is not installed by default. Without it the agent starts, logs <em>“API Server: aiohttp not installed”</em>, binds no port, and does not exit — so it appears healthy while nothing can connect. The script above installs it.</p>
+</div>
+<p class="meta">Roughly 370 MB on disk and about 190 MB of memory while answering. It runs on a 1 GB server, though not with much to spare.</p>
+
 <h2>On a Mac</h2>
 <p>A small menu-bar app. It finds your agent, shows a pairing code, and otherwise stays out of the way.</p>
 <p><a class="download" href="/downloads/KiteHelper.dmg">Download Kite Helper</a> <span class="meta">379 KB · macOS 14 or later · signed and notarised by Apple</span></p>
