@@ -45,7 +45,8 @@
 <h2 id="what">What Kite is</h2>
 <p>Kite is an iOS client for <strong>Hermes</strong>, the open-source agent from Nous Research. It does not contain an agent. You run one — on your Mac or on a server — and Kite talks to it.</p>
 <p>That distinction matters because an agent has a terminal, your files and its own memory. Kite gives you those from your phone; it cannot give you them on its own.</p>
-<p>There is a second mode: Kite can talk <strong>straight to a model</strong> with your own API key, no agent involved. That works anywhere with nothing to install, but you get a plain chat — no memory, no tools, no access to your files. Useful, and a different thing.</p>
+<p>There is a second mode: Kite can talk <strong>straight to a model</strong>, no agent involved. The endpoint is a plain text field and the API key is optional, so that means any OpenAI-compatible service — OpenRouter, Groq, Together, DeepInfra, Nous Portal — and equally <strong>a model running on your own computer</strong> through Ollama or LM Studio.</p>
+<p>You get a plain chat: no memory, no tools, no access to your files. Useful, and a different thing from an agent.</p>
 
 <div class="card" id="tailscale">
 <p><strong>Install Tailscale first. Almost everything works better with it, and some things only work with it.</strong></p>
@@ -84,6 +85,7 @@ bash install-hermes-server.sh</code></pre>
 <p>If your Mac changes address — a new DHCP lease, or moving between wifi and a hotspot — Kite races both known addresses to find it again. If it ever cannot, re-scanning the QR always fixes it.</p>
 
 <h2 id="models">Choosing a model</h2>
+<p><strong>Using a model on your own machine.</strong> Point the endpoint at it and leave the key blank — for Ollama that is <code>http://&lt;address&gt;:11434/v1</code>. ⚠️ Ollama listens only on <code>127.0.0.1</code> by default, so start it bound to an address your phone can reach: <code>OLLAMA_HOST=&lt;your-tailnet-address&gt;:11434 ollama serve</code>. Binding it to <code>0.0.0.0</code> instead would expose it to every device on whatever network you are on, and Ollama has no authentication at all.</p>
 <p>Kite shows what your agent offers, with free models badged. Your choice is locked to each conversation, so a thread keeps answering with the model it started with.</p>
 <div class="card">
 <p><strong>⚠️ Free models run out faster than you expect.</strong> Every step your agent takes is a separate request — one question that reads a few files can be twenty — and a free key's daily allowance is small.</p>
