@@ -29,11 +29,11 @@
 <p class="updated">Last updated: 14 August 2026</p>
 
 <div class="card">
-<p><strong>The short version.</strong> We operate no servers that your conversations pass through. <strong>The app</strong> collects no analytics and uses no tracking or advertising SDKs of any kind. Kite talks to your own computer, and — only if you explicitly choose to — to an AI provider that you select and hold your own account with. <strong>This website</strong> counts page views, described below.</p>
+<p><strong>The short version.</strong> No conversation of yours passes through any server of ours. <strong>The app</strong> collects no analytics and uses no tracking or advertising SDKs of any kind. Kite talks to your own computer, and — only if you explicitly choose to — to an AI provider that you select and hold your own account with. <strong>This website</strong> counts page views, described below.</p>
 </div>
 
 <h2>What Kite stores, and where</h2>
-<p>Everything below is stored <em>on your device</em>. None of it is transmitted to us, because there is no “us” to transmit it to — we run no backend for this app.</p>
+<p>Everything below is stored <em>on your device</em> and is never transmitted to us. The one thing we do receive is described under <a href="#notifications">Notifications</a>, and it is not any of this.</p>
 
 <table>
 <tr><th>What</th><th>Why it exists</th></tr>
@@ -70,9 +70,12 @@
   <li><strong>You can avoid it entirely.</strong> On your own wi-fi Kite talks to your computer directly with nothing in between. Tailscale only matters when you are elsewhere.</li>
 </ul>
 
-<h2>Notifications</h2>
-<p>If you enable notifications, Kite can tell you when your agent has replied. Those notifications are sent through Apple’s Push Notification service and <strong>contain no message content</strong> — only the fact that a reply arrived. The text of the reply is fetched by the app directly from your own computer.</p>
-<p>Apple receives a device token in order to deliver the notification, as it does for every app that uses notifications.</p>
+<h2 id="notifications">Notifications</h2>
+<p>If you enable notifications, Kite can tell you when your agent has replied. Those notifications <strong>contain no message content</strong> — only the fact that a reply arrived. The reply itself is fetched by the app directly from your own computer.</p>
+<p><strong>This is the one part of Kite that involves a server of ours.</strong> Sending a notification to an Apple device requires a signing key that belongs to the developer account, and that key can never be given out — so it lives on a small relay we run, and your agent asks the relay to wake your phone.</p>
+<p>The relay is sent, and stores, <strong>one thing: your device's notification token</strong>, so your agent can reach that phone later. It is not connected to a name, an email or an account, because Kite has none. It receives your agent's IP address the way any server does, and neither logs nor stores it.</p>
+<p>It cannot receive your messages. The notification wording is fixed in the relay's own source rather than being something a request can set, so there is nothing for a conversation to travel in.</p>
+<p>Notifications are optional. Decline them and nothing is ever sent to the relay. If you run your own agent you can also point it at your own relay instead of ours.</p>
 
 <h2>Photos, documents and files</h2>
 <p>When you attach a photo or a PDF, Kite processes it <strong>on your device</strong> — including reading text from a scanned document — and sends the result to your own agent. Nothing is uploaded to us at any point.</p>
