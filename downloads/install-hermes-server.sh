@@ -34,15 +34,38 @@ nice -n 19 ./venv/bin/pip install --quiet --no-cache-dir aiohttp
 if [ ! -f "$HOME/.hermes/.env" ]; then
   mkdir -p "$HOME/.hermes"; umask 077
   KEY=$(python3 -c "import secrets; print(secrets.token_urlsafe(32))")
+  MODEL="${KITE_DEFAULT_MODEL:-nvidia/nemotron-3-super-120b-a12b:free}"
   cat > "$HOME/.hermes/.env" <<ENV
 OPENROUTER_API_KEY=PUT_YOUR_KEY_HERE
 API_SERVER_ENABLED=true
 API_SERVER_HOST=127.0.0.1
 API_SERVER_PORT=${PORT}
 API_SERVER_KEY=${KEY}
+# ⚠️ Not just the name advertised on /v1/models, despite the setting's own
+# description. A conversation with no explicit model lock sends this string
+# upstream AS the model id, so the stock value "hermes-agent" reaches the
+# provider and returns 400 "hermes-agent is not a valid model ID" — which the
+# phone shows as a provider error on the very first message. Must be a real slug.
+API_SERVER_MODEL_NAME=${MODEL}
 ENV
   chmod 600 "$HOME/.hermes/.env"
   echo "  wrote ~/.hermes/.env — put your OpenRouter key in it before starting"
+fi
+
+if [ ! -f "$HOME/.hermes/config.yaml" ]; then
+  # ⚠️ Without a provider pinned here, Hermes falls back to Nous Portal, which a
+  # fresh server has never logged into — so every new conversation fails with
+  # "hermes is not logged into Nous Portal" before it reaches a model. `hermes
+  # model` sets this interactively, which is no use over SSH.
+  umask 077
+  cat > "$HOME/.hermes/config.yaml" <<YAML
+model:
+  provider: "openrouter"
+  default: "${KITE_DEFAULT_MODEL:-nvidia/nemotron-3-super-120b-a12b:free}"
+  base_url: "https://openrouter.ai/api/v1"
+YAML
+  chmod 600 "$HOME/.hermes/config.yaml"
+  echo "  wrote ~/.hermes/config.yaml (provider pinned to openrouter)"
 fi
 
 cat > "$BASE/run-agent.sh" <<'RUN'
