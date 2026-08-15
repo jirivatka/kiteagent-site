@@ -33,12 +33,24 @@
 </div>
 
 <h2>Getting started</h2>
+
+<h3>Talking to a model</h3>
+<p>The fastest way in, and nothing to install on any computer.</p>
 <ol>
-  <li>Install <strong>Kite Helper</strong> on the Mac that runs your agent, and leave it running in the menu bar.</li>
-  <li>Open Kite on your phone and tap <strong>Pair with your Mac</strong>.</li>
-  <li>Scan the code shown by Kite Helper.</li>
+  <li>Settings → <strong>Connect to</strong> → <strong>A model directly</strong>.</li>
+  <li>Tap <strong>Use OpenRouter</strong> (or type any OpenAI-compatible base URL) and paste your API key.</li>
+  <li>Pick a model. Free ones are badged.</li>
 </ol>
-<p>That is the whole setup. There is no account, no server address to type, and no port forwarding.</p>
+<p>To use a model on your own computer instead, put its address in the same field and leave the key empty — for Ollama that is <code>http://&lt;address&gt;:11434/v1</code>. See <a href="#local">my local model is not answering</a> if it does not respond.</p>
+
+<h3>Talking to your agent</h3>
+<p>For tools, memory and access to your files, you need an agent running somewhere.</p>
+<ol>
+  <li>Install <a href="/download.html">Kite Helper</a> on the machine that runs your agent, and leave it running.</li>
+  <li>Open Kite and tap <strong>Pair with your Mac</strong>.</li>
+  <li>Scan the code the helper shows.</li>
+</ol>
+<p>That is the whole setup. No account, no server address to type, no port forwarding.</p>
 
 <h2>The dot is red</h2>
 
@@ -65,6 +77,17 @@
   <li>If you wear an Apple Watch and your phone is locked, notifications go to the watch instead. That is iOS behaviour, not a Kite setting.</li>
 </ul>
 
+<h2 id="local">My local model is not answering</h2>
+<p>Nearly always one of two things.</p>
+<ul>
+  <li><strong>It is only listening to itself.</strong> Ollama binds <code>127.0.0.1</code> by default, which your phone cannot reach. Start it on an address your phone can: <code>OLLAMA_HOST=&lt;your-private-address&gt;:11434 ollama serve</code>.</li>
+  <li><strong>The address is wrong.</strong> It must end in <code>/v1</code> — <code>http://100.x.y.z:11434/v1</code> — and your phone must be on the same private network as that machine.</li>
+</ul>
+<p>Leave the API key empty; local servers do not want one. ⚠️ Do not bind it to <code>0.0.0.0</code> to make it work — Ollama has no authentication, so that offers your models to every device on whatever network you are on.</p>
+
+<h2>“Today’s free requests are used up”</h2>
+<p>A free provider key has a small daily allowance, and <em>every step your agent takes is a request</em> — one question that reads a few files can be twenty. The allowance resets at midnight UTC. Most providers raise it substantially for a small one-off credit purchase, and you carry on using free models.</p>
+
 <h2>Why did another model answer?</h2>
 <p>When you connect directly to a provider, Kite asks for the model you chose and lists one or two alternates. If your model is busy — free models are often heavily used — the provider answers with the next one instead, and Kite tells you which. You get a reply rather than an error, and it is always labelled.</p>
 
@@ -73,9 +96,10 @@
 
 <h2>Requirements</h2>
 <ul>
-  <li>iPhone or iPad running a current version of iOS.</li>
-  <li>A Mac running your agent, with Kite Helper installed.</li>
-  <li>For access away from home: a private network such as Tailscale on both devices.</li>
+  <li>An iPhone or iPad.</li>
+  <li>Somewhere to send messages: a provider API key, a model on your own machine, or an agent.</li>
+  <li>For an agent: <a href="/download.html">Kite Helper</a> on the machine it runs on.</li>
+  <li><a href="https://tailscale.com/download">Tailscale</a> on both devices, unless you are only using a hosted provider — that works anywhere with nothing extra.</li>
 </ul>
 
 <h2>Still stuck</h2>

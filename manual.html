@@ -31,9 +31,11 @@
 <div class="card">
 <p><strong>On this page.</strong>
 <a href="#what">What Kite is</a> ·
+<a href="#model">Talking to a model</a> ·
+<a href="#agent">Talking to an agent</a> ·
 <a href="#tailscale">Tailscale</a> ·
-<a href="#mac">Setting up on a Mac</a> ·
-<a href="#server">Setting up on a server</a> ·
+<a href="#mac">An agent on your Mac</a> ·
+<a href="#server">An agent on a server</a> ·
 <a href="#pairing">Pairing</a> ·
 <a href="#models">Choosing a model</a> ·
 <a href="#using">Everyday use</a> ·
@@ -43,23 +45,43 @@
 </div>
 
 <h2 id="what">What Kite is</h2>
-<p>Kite is an iOS client for <strong>Hermes</strong>, the open-source agent from Nous Research. It does not contain an agent. You run one — on your Mac or on a server — and Kite talks to it.</p>
-<p>That distinction matters because an agent has a terminal, your files and its own memory. Kite gives you those from your phone; it cannot give you them on its own.</p>
-<p>There is a second mode: Kite can talk <strong>straight to a model</strong>, no agent involved. The endpoint is a plain text field and the API key is optional, so that means any OpenAI-compatible service — OpenRouter, Groq, Together, DeepInfra, Nous Portal — and equally <strong>a model running on your own computer</strong> through Ollama or LM Studio.</p>
-<p>You get a plain chat: no memory, no tools, no access to your files. Useful, and a different thing from an agent.</p>
+<p>Kite is an iOS app for talking to AI you control. There are two ways to use it, and they are genuinely different things.</p>
+<ul>
+  <li><strong>A model, directly.</strong> Any OpenAI-compatible endpoint with your own key — or no key, if the model runs on your own computer. You get a plain chat: fast, private, nothing to install anywhere.</li>
+  <li><strong>An agent.</strong> <a href="https://github.com/NousResearch/hermes-agent">Hermes</a>, the open-source agent from Nous Research, running on your Mac or a server. It searches, reads, runs commands, remembers, and touches your actual files. Kite shows every step as it happens.</li>
+</ul>
+<p>You can switch between them whenever you like, and each keeps its own settings. Start with a model if you want something working in a minute; add an agent when you want work done rather than questions answered.</p>
+
+<h2 id="model">Talking to a model</h2>
+<p>Settings → <strong>Connect to</strong> → <strong>A model directly</strong>. The endpoint is a plain text field and the API key is optional, which is what makes both of these possible:</p>
+<ul>
+  <li><strong>A hosted provider.</strong> Buttons fill in OpenRouter and Nous Portal; any other OpenAI-compatible service works by typing its base URL — Groq, Together, DeepInfra and so on. Paste your key, pick a model.</li>
+  <li><strong>A model on your own computer.</strong> Point it at <code>http://&lt;address&gt;:11434/v1</code> for Ollama, or LM Studio's server address, and leave the key blank.</li>
+</ul>
+<div class="card">
+<p><strong>⚠️ Ollama only listens to itself by default.</strong> On <code>127.0.0.1</code> your phone cannot reach it. Start it on an address your phone can see:</p>
+<pre><code>OLLAMA_HOST=&lt;your-tailnet-address&gt;:11434 ollama serve</code></pre>
+<p>Use your private-network address, <strong>not</strong> <code>0.0.0.0</code>. Ollama has no authentication at all, so binding it to everything offers your models to every device on whatever network you happen to be on — including hotel and café wi-fi.</p>
+</div>
+<p>A hosted provider works from anywhere with nothing else set up. A model on your own machine needs a private path to it, which is the next section.</p>
+
+<h2 id="agent">Talking to an agent</h2>
+<p>An agent is the part no other chat client can offer, and it needs two things: the agent itself running on a machine of yours, and <a href="/download.html">Kite Helper</a> beside it so your phone never holds the agent's key.</p>
+<p>Set it up <a href="#mac">on a Mac</a> or <a href="#server">on a server</a> — Kite connects to either, and the difference is only which machine its tools act on.</p>
 
 <div class="card" id="tailscale">
-<p><strong>Install Tailscale first. Almost everything works better with it, and some things only work with it.</strong></p>
+<p><strong>Install Tailscale if you are reaching your own machine. You do not need it for a hosted provider.</strong></p>
 <ul>
-<li><strong>Mac agent, at home:</strong> works without it, over your wifi.</li>
-<li><strong>Mac agent, anywhere else:</strong> needs it. There is no other route to your Mac from a café or a train.</li>
-<li><strong>Server agent, always:</strong> needs it. Your phone is never on the same network as a server.</li>
+<li><strong>A hosted provider:</strong> not needed at all — it works anywhere, like any other app.</li>
+<li><strong>Your own machine, at home:</strong> works without it, over your wifi.</li>
+<li><strong>Your own machine, anywhere else:</strong> needs it. There is no other route to your Mac from a café or a train — that applies to a local model just as much as to an agent.</li>
+<li><strong>A server, always:</strong> needs it. Your phone is never on the same network as a server.</li>
 </ul>
 <p><a href="https://tailscale.com/download">Tailscale</a> is free for personal use, takes a few minutes, and needs installing on <em>both</em> your phone and the machine running your agent — signed into the same account, so they can see each other.</p>
 <p>⚠️ The alternative — exposing your agent to the internet — is a bad trade. Your agent can run commands on the machine it lives on, so a single leaked token would be a shell on your Mac or your server. Kite is built assuming you will not do this.</p>
 </div>
 
-<h2 id="mac">Setting up on a Mac</h2>
+<h2 id="mac">An agent on your Mac</h2>
 <p>Best if your files and tools are on that Mac. It has to be awake for your phone to reach it.</p>
 <ol>
   <li><strong>Install Hermes</strong> and get it running with its API server enabled.</li>
@@ -69,14 +91,13 @@
 </ol>
 <p>That is the whole setup. You are not asked for an address, a certificate or an account, because the QR carries everything.</p>
 
-<h2 id="server">Setting up on a server</h2>
+<h2 id="server">An agent on a server</h2>
 <p>Best if you would rather not leave a Mac on. The agent is always available, and its tools act on the server rather than on your Mac.</p>
 <pre><code>curl -O https://kiteagent.app/downloads/install-hermes-server.sh
 bash install-hermes-server.sh</code></pre>
 <p>It checks the machine first, installs the agent and helper, starts both, verifies the whole chain and prints a pairing link. Roughly 370 MB of disk and about 190 MB of memory while answering — it runs on a 1 GB server, though without much to spare.</p>
 <div class="card">
-<p><strong>You need Tailscale, or something like it.</strong> Your phone is never on the same network as a server, so there has to be a private path between them. <a href="https://tailscale.com/download">Tailscale</a> on both is the simplest.</p>
-<p>⚠️ <strong>Do not open the helper's port to the internet instead.</strong> A pairing token would be the only thing between a stranger and an agent that can run commands on your server.</p>
+<p>⚠️ <strong>Do not open the helper's port to the internet</strong> as a shortcut around Tailscale. A pairing token would be the only thing between a stranger and an agent that can run commands on your server.</p>
 </div>
 
 <h2 id="pairing">Pairing, and what happens when you leave home</h2>
@@ -98,7 +119,7 @@ bash install-hermes-server.sh</code></pre>
   <li><strong>Watch it work.</strong> Searching, reading, running commands — steps appear as they happen, not just the answer.</li>
   <li><strong>Send it anything.</strong> Share a link, photo or document from any app. PDFs are read on your phone, scans included.</li>
   <li><strong>Search inside a conversation.</strong> Pull down in a thread; matches highlight and the arrows step through them.</li>
-  <li><strong>Pick up anywhere.</strong> Conversations live on the agent, so your desktop and terminal see the same threads.</li>
+  <li><strong>Pick up anywhere.</strong> With an agent, conversations live on it, so your desktop and terminal see the same threads. Talking to a model directly, they live on the phone and nowhere else — the list shows them under <em>On this phone</em>.</li>
 </ul>
 <p>⚠️ Each agent keeps its <em>own</em> conversations. Pairing with a different one shows you that agent's threads, not a merged list — nothing syncs between two agents.</p>
 
@@ -113,6 +134,9 @@ bash install-hermes-server.sh</code></pre>
 
 <h3>“Hermes is not logged into Nous Portal”</h3>
 <p>Your agent has no provider configured and is falling back to one it has never signed into. Pin a provider in <code>~/.hermes/config.yaml</code>, or pick a model in Kite that the agent can actually serve. The server installer does this for you.</p>
+
+<h3>A local model does not answer</h3>
+<p>Ollama binds <code>127.0.0.1</code> by default, which your phone cannot reach — start it on your private-network address instead (see <a href="#model">Talking to a model</a>). Check the address ends in <code>/v1</code>, leave the API key empty, and make sure your phone is on the same private network as that machine.</p>
 
 <h3>An empty reply, or the first message of a new chat fails</h3>
 <p>On a self-installed agent, check <code>API_SERVER_MODEL_NAME</code> in <code>~/.hermes/.env</code>. Despite its description it is sent upstream <em>as the model id</em> when a conversation has no model chosen, so the stock value is rejected by every provider. It must be a real model name.</p>
