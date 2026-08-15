@@ -74,6 +74,7 @@
 <p>If you enable notifications, Kite can tell you when your agent has replied. Those notifications <strong>contain no message content</strong> — only the fact that a reply arrived. The reply itself is fetched by the app directly from your own computer.</p>
 <p><strong>This is the one part of Kite that involves a server of ours.</strong> Sending a notification to an Apple device requires a signing key that belongs to the developer account, and that key can never be given out — so it lives on a small relay we run, and your agent asks the relay to wake your phone.</p>
 <p>The relay is sent, and stores, <strong>one thing: your device's notification token</strong>, so your agent can reach that phone later. It is not connected to a name, an email or an account, because Kite has none. It receives your agent's IP address the way any server does, and neither logs nor stores it.</p>
+<p><strong>It is kept for 90 days.</strong> The app re-registers every time you open it, so an active phone refreshes its entry long before that; one you stop using drops out on its own. Delete Kite and the entry expires within 90 days with nothing further to do.</p>
 <p>It cannot receive your messages. The notification wording is fixed in the relay's own source rather than being something a request can set, so there is nothing for a conversation to travel in.</p>
 <p>Notifications are optional. Decline them and nothing is ever sent to the relay. If you run your own agent you can also point it at your own relay instead of ours.</p>
 

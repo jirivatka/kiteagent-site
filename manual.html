@@ -134,7 +134,7 @@ bash install-hermes-server.sh</code></pre>
   <li><strong>Conversations stay on your agent</strong>, in its own database on your machine. There is no account and no sign-up.</li>
   <li><strong>Your messages go to whichever model provider you chose</strong>, under your own key. Local storage, remote inference — worth being clear-eyed about.</li>
   <li><strong>Your agent's key never reaches your phone.</strong> The helper holds it; your phone gets a pairing token, revocable on its own.</li>
-  <li><strong>Notifications carry no message content</strong> — only that a reply arrived. Your phone then fetches it over your own private network. This is the one part that involves a server of ours: waking an iPhone needs a signing key that cannot be given out, so a small relay holds it and is sent your notification token and nothing else.</li>
+  <li><strong>Notifications carry no message content</strong> — only that a reply arrived. Your phone then fetches it over your own private network. This is the one part that involves a server of ours: waking an iPhone needs a signing key that cannot be given out, so a small relay holds it and is sent your notification token and nothing else, kept for 90 days and refreshed whenever you open the app.</li>
 </ul>
 <p>The full <a href="/privacy.html">privacy policy</a> is short, because there is little to describe.</p>
 
