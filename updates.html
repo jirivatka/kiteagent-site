@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Email updates — Kite Agent</title>
+<meta name="description" content="Occasional email about Kite Agent: when it ships, and when something worth knowing changes. No newsletter, no tracking, unsubscribe in one click.">
+<link rel="icon" href="/favicon-32.png" sizes="32x32">
+<link rel="icon" href="/icon-512.png" sizes="512x512">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="theme-color" content="#E4552F">
+<link rel="canonical" href="https://kiteagent.app/updates.html">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://kiteagent.app/updates.html">
+<meta property="og:title" content="Email updates — Kite Agent">
+<meta property="og:image" content="https://kiteagent.app/share.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="style.css?v=e341d8cf">
+</head>
+<body>
+<header><div class="wrap">
+  <a class="mark" href="/"><img src="/icon-96.png" alt="" width="28" height="28">Kite Agent</a>
+  <nav><a href="/manual.html">Manual</a><a href="/download.html">Get&nbsp;Helper</a><a href="/support.html">Support</a><a href="/privacy.html">Privacy</a></nav>
+</div></header>
+
+<main class="wrap">
+<h1>Email updates</h1>
+<p class="lede">One address, so we can tell you when Kite ships and when something worth knowing changes. That is the whole purpose.</p>
+
+<form id="signup" novalidate>
+  <label class="field">
+    <span>Your email</span>
+    <input type="email" id="email" name="email" autocomplete="email" required
+           placeholder="you@example.com" spellcheck="false">
+  </label>
+
+  <label class="consent">
+    <input type="checkbox" id="consent" required>
+    <span>I would like occasional email about Kite Agent. I can unsubscribe at any time.</span>
+  </label>
+
+  <!-- Bots fill every field they find; people never see this one. -->
+  <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+  <button class="download" type="submit" id="go">Sign me up</button>
+  <p class="formnote" id="status" role="status"></p>
+</form>
+
+<noscript>
+  <div class="card">
+    <p>This form needs JavaScript, which is on for almost everyone but evidently not for you. Email <a href="mailto:hello@kiteagent.app">hello@kiteagent.app</a> and we will add you by hand.</p>
+  </div>
+</noscript>
+
+<div class="card">
+<p><strong>What you are agreeing to.</strong> Occasional email from RedPixl s.r.o. about Kite Agent — realistically a handful a year, and none at all until there is something to say.</p>
+<ul>
+  <li><strong>Only your address is stored</strong>, with the date and the sentence you agreed to. No name, no IP address, no tracking pixels, no idea whether you opened anything.</li>
+  <li><strong>Nobody else gets it.</strong> Not sold, not shared, not used to advertise anything but Kite.</li>
+  <li><strong>Kept until you leave</strong>, and gone the moment you do.</li>
+</ul>
+</div>
+
+<h2>Leaving</h2>
+<p>Enter the same address and it is deleted immediately — no confirmation step, no “are you sure”, no link to click in an email.</p>
+<form id="leave" novalidate>
+  <label class="field">
+    <span>Address to remove</span>
+    <input type="email" id="leave-email" autocomplete="email" placeholder="you@example.com" spellcheck="false">
+  </label>
+  <button class="ghost" type="submit" id="leave-go">Remove me</button>
+  <p class="formnote" id="leave-status" role="status"></p>
+</form>
+
+<p class="updated">Prefer no email at all? The <a href="https://github.com/jirivatka/Kite-Agent-Support/discussions">support forum</a> announces the same things, and costs us nothing about you.</p>
+</main>
+
+<footer><div class="wrap">
+<p>© 2026 RedPixl s.r.o. · <a href="/support.html">Support</a> · <a href="/privacy.html">Privacy</a></p>
+<p class="fineprint">Kite Agent is an independent client. It is not affiliated with, endorsed by, or sponsored by Nous Research. “Hermes” refers to the open-source Hermes agent and is used here only to describe what Kite connects to.</p>
+</div></footer>
+
+<script>
+(function () {
+  var API = "https://kite-list.jiri-vatka.workers.dev";
+
+  function wire(formId, statusId, buttonId, path, getBody, successText) {
+    var form = document.getElementById(formId);
+    var status = document.getElementById(statusId);
+    var button = document.getElementById(buttonId);
+    if (!form) return;
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var body = getBody();
+      if (!body) return;
+      button.disabled = true;
+      status.className = "formnote";
+      status.textContent = "One moment…";
+      fetch(API + path, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(body)
+      })
+        .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+        .then(function (res) {
+          button.disabled = false;
+          if (res.ok) {
+            status.className = "formnote good";
+            status.textContent = successText(res.j);
+            form.reset();
+          } else {
+            status.className = "formnote bad";
+            status.textContent = res.j.error || "That did not work. Try again?";
+          }
+        })
+        .catch(function () {
+          button.disabled = false;
+          status.className = "formnote bad";
+          // Says what to do next rather than restating that something failed.
+          status.textContent = "Could not reach us. Check your connection, or email hello@kiteagent.app.";
+        });
+    });
+  }
+
+  wire("signup", "status", "go", "/subscribe", function () {
+    var email = document.getElementById("email").value.trim();
+    var consent = document.getElementById("consent").checked;
+    var status = document.getElementById("status");
+    if (!email) { status.className = "formnote bad"; status.textContent = "An address, first."; return null; }
+    if (!consent) { status.className = "formnote bad"; status.textContent = "Tick the box and you are in."; return null; }
+    return { email: email, consent: true, website: document.getElementById("website").value };
+  }, function (j) {
+    return j.already ? "You were already on the list — nothing changed." : "Done. You will hear from us when there is something to say.";
+  });
+
+  wire("leave", "leave-status", "leave-go", "/unsubscribe", function () {
+    var email = document.getElementById("leave-email").value.trim();
+    var status = document.getElementById("leave-status");
+    if (!email) { status.className = "formnote bad"; status.textContent = "Which address?"; return null; }
+    return { email: email };
+  }, function () {
+    return "Removed. If that address was on the list, it is not now.";
+  });
+})();
+</script>
+<!-- Cloudflare Web Analytics — cookieless, no cross-site tracking. See /privacy.html -->
+<script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "73a5990c2cba4c96b40e4c8363a0e0a8"}'></script>
+</body>
+</html>

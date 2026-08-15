@@ -374,3 +374,72 @@ pre code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
   .lb-cap { font-size: .88rem; }
   .lb-controls { gap: 1.1rem; }
 }
+
+/* ---- Forms ---------------------------------------------------------------
+   Only the updates page has any. Deliberately plain: a signup form that looks
+   like a marketing widget invites the suspicion the rest of the site spends
+   its time dispelling. */
+.field {
+  display: block;
+  margin: 1.4rem 0 1rem;
+}
+.field span {
+  display: block;
+  font-size: .9rem;
+  color: var(--muted);
+  margin-bottom: .35rem;
+}
+.field input {
+  width: 100%;
+  font: inherit;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: .7rem .9rem;
+}
+.field input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  border-color: transparent;
+}
+.consent {
+  display: flex;
+  gap: .6rem;
+  align-items: flex-start;
+  margin: 0 0 1.2rem;
+  font-size: .95rem;
+  line-height: 1.5;
+}
+/* 20px, and the whole label is the target — a consent tick that is hard to hit
+   is a consent tick people mis-tap. */
+.consent input {
+  width: 20px;
+  height: 20px;
+  margin-top: .15rem;
+  flex: none;
+  accent-color: var(--accent);
+}
+/* The honeypot. Off-screen rather than display:none, which some bots skip. */
+#website {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+.formnote {
+  font-size: .9rem;
+  margin: .8rem 0 0;
+  min-height: 1.2em;
+  color: var(--muted);
+}
+.formnote.good { color: #1a7f37; }
+.formnote.bad  { color: #b3261e; }
+@media (prefers-color-scheme: dark) {
+  .formnote.good { color: #4ac26b; }
+  .formnote.bad  { color: #ff7b72; }
+}
+button.download, button.ghost { border: 0; cursor: pointer; font: inherit; }
+button.ghost { border: 1px solid var(--line); }
+button:disabled { opacity: .6; cursor: default; }
