@@ -21,7 +21,25 @@ body {
   -webkit-text-size-adjust: 100%;
 }
 .wrap { max-width: 46rem; margin: 0 auto; padding: 2.5rem 1.25rem 5rem; }
-header { border-bottom: 1px solid var(--line); }
+/* Sticky, so the way out of a page is always one tap away rather than a scroll
+   back to the top. Translucent rather than solid: content visibly passing under
+   it reads as a layer, where an opaque bar reads as a gap in the page. */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  border-bottom: 1px solid var(--line);
+  background: var(--bg);
+}
+@supports (backdrop-filter: blur(1px)) {
+  header {
+    background: color-mix(in srgb, var(--bg) 80%, transparent);
+    backdrop-filter: saturate(1.8) blur(14px);
+    -webkit-backdrop-filter: saturate(1.8) blur(14px);
+  }
+}
+/* Keeps any future in-page anchor from landing underneath the bar. */
+html { scroll-padding-top: 4.5rem; }
 header .wrap { padding: 1.1rem 1.25rem; display: flex; align-items: center; gap: .7rem; }
 .mark { font-weight: 650; letter-spacing: -.01em; text-decoration: none; color: var(--ink); }
 nav { margin-left: auto; display: flex; gap: 1.1rem; }
@@ -68,6 +86,9 @@ footer .wrap { padding: 1.5rem 1.25rem; }
   border-radius: 22%;
   display: block;
 }
+/* Without this the name wraps under the icon on a narrow phone, which made the
+   sticky bar 92px tall — a ninth of the screen, permanently. */
+.mark { white-space: nowrap; }
 
 /* Attribution line. Deliberately quiet — it is a legal necessity, not a claim. */
 .fineprint {
@@ -160,3 +181,196 @@ pre code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
 .download:hover { opacity: .92; }
 .meta { font-size: .82rem; opacity: .7; }
 .meta code { font-size: .78rem; word-break: break-all; }
+
+
+/* ---- Hero ---------------------------------------------------------------
+   Centred, and the only centred block on the page. The rest is left-aligned
+   prose, which is easier to read; a hero is looked at rather than read, and
+   centring it separates the pitch from the explanation below it. */
+.hero {
+  text-align: center;
+  margin: 1rem 0 2.5rem;
+}
+.hero h1 {
+  font-size: clamp(2rem, 6vw, 2.6rem);
+  margin: .5rem 0 .6rem;
+}
+.hero .lede {
+  max-width: 38rem;
+  margin: 0 auto 1.6rem;
+}
+/* Says the app is not out yet, before anyone taps a button expecting a
+   download. The dot carries the meaning at a glance; the word carries it for
+   anyone who cannot see the dot. */
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  font-size: .8rem;
+  font-weight: 600;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: .3rem .7rem;
+  border-radius: 999px;
+  margin: 0;
+}
+.status .dot {
+  width: .45rem;
+  height: .45rem;
+  border-radius: 50%;
+  background: #34a853;
+}
+.cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .6rem;
+  justify-content: center;
+  margin: 0 0 1.1rem;
+}
+/* The second action, weighted below the first without being hidden. */
+.ghost {
+  display: inline-block;
+  padding: .7rem 1.2rem;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  font-weight: 600;
+  text-decoration: none;
+}
+.ghost:hover { border-color: var(--muted); }
+.hero-note {
+  font-size: .92rem;
+  color: var(--muted);
+  max-width: 34rem;
+  margin: 0 auto;
+}
+
+/* ---- Screenshots, enlargeable ------------------------------------------- */
+.shots { margin-inline: auto; }
+.shot {
+  display: block;
+  cursor: zoom-in;
+  border-radius: 14px;
+}
+.shot:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+.shot img { transition: transform .18s ease, box-shadow .18s ease; }
+.shot:hover img {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgb(0 0 0 / .16);
+}
+.shots-hint {
+  text-align: center;
+  font-size: .82rem;
+  color: var(--muted);
+  margin: -1.4rem 0 2.5rem;
+}
+
+/* ---- The viewer ---------------------------------------------------------
+   Controls sit below the image rather than over its edges: a phone screenshot
+   is nearly as tall as the viewport, so edge arrows would land on top of the
+   thing being looked at, and on a narrow screen on top of each other. */
+#lightbox {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  width: 100vw;
+  height: 100dvh;
+  max-width: 100vw;
+  max-height: 100dvh;
+  background: transparent;
+  color: #fff;
+  overflow: hidden;
+}
+#lightbox[open] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .9rem;
+}
+#lightbox::backdrop {
+  background: rgb(8 9 12 / .88);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+#lb-img {
+  /* A definite height plus the known aspect ratio reserves the box before the
+     image loads. With width/height auto it measures 0x0 until the bytes arrive,
+     so the caption and arrows snap into place a beat later — small, but it is
+     the first thing that happens when someone taps a screenshot.
+     Every screenshot is 900x1956, so one ratio covers all six. */
+  height: min(78dvh, calc(min(92vw, 22rem) * 1956 / 900));
+  width: auto;
+  aspect-ratio: 900 / 1956;
+  object-fit: contain;
+  border-radius: 20px;
+  box-shadow: 0 18px 50px rgb(0 0 0 / .5);
+}
+.lb-cap {
+  margin: 0;
+  font-size: .95rem;
+  text-align: center;
+  max-width: 26rem;
+  padding: 0 1rem;
+}
+.lb-controls {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+}
+.lb-count {
+  font-size: .85rem;
+  opacity: .75;
+  font-variant-numeric: tabular-nums;
+  min-width: 3.5rem;
+  text-align: center;
+}
+/* 44px minimum, the size a thumb actually hits. */
+.lb-nav, .lb-close {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgb(255 255 255 / .25);
+  background: rgb(255 255 255 / .10);
+  color: #fff;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.lb-nav:hover, .lb-close:hover { background: rgb(255 255 255 / .2); }
+.lb-close {
+  position: fixed;
+  top: max(1rem, env(safe-area-inset-top));
+  right: 1rem;
+  font-size: 1.7rem;
+}
+@media (prefers-reduced-motion: reduce) {
+  .shot img { transition: none; }
+  .shot:hover img { transform: none; }
+}
+
+
+/* A sticky bar is on screen the whole time, so on a phone it is worth the few
+   pixels it costs to keep it shallow. */
+@media (max-width: 420px) {
+  header .wrap { padding: .75rem 1rem; }
+  .mark { font-size: .97rem; gap: .45rem; }
+  nav { gap: .85rem; }
+  nav a { font-size: .88rem; }
+  /* Stacked buttons at their natural widths look ragged; matching them reads
+     as a pair of choices rather than two unrelated links. */
+  .cta { flex-direction: column; align-items: center; }
+  .cta a { width: 100%; max-width: 17rem; text-align: center; }
+  .lb-cap { font-size: .88rem; }
+  .lb-controls { gap: 1.1rem; }
+}
