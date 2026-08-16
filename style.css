@@ -568,9 +568,13 @@ button:disabled { opacity: .6; cursor: default; }
    third-party marketing. The bubble carries only the phrase a person actually
    says, which is ours and is also the exact invocation the App Intent
    registers — so it stays true as documentation, not just decoration. */
+/* ⚠️ Quieter than it was. This first sat directly under the screenshots, above
+   "Bring your own model" and "Or your own agent" — giving the smallest feature
+   more weight than the reason the app exists. It now illustrates the bullet it
+   belongs to, and is sized accordingly. */
 .say {
-  margin: 2.5rem 0 2rem;
-  padding: 1.5rem 1.25rem;
+  margin: 1.75rem 0;
+  padding: 1.25rem 1.25rem;
   border: 1px solid var(--line);
   border-radius: 16px;
   background: var(--surface);
@@ -586,11 +590,11 @@ button:disabled { opacity: .6; cursor: default; }
 .say-bubble {
   display: inline-block;
   margin: 0;
-  padding: .7rem 1.1rem;
+  padding: .6rem 1rem;
   border-radius: 20px 20px 20px 6px;   /* a tail, so it reads as speech */
   background: var(--bg);
   border: 1px solid var(--line);
-  font-size: 1.12rem;
+  font-size: 1.02rem;
   line-height: 1.4;
   /* Balanced so the phrase never breaks after one word on a narrow screen. */
   text-wrap: balance;

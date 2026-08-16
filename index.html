@@ -35,7 +35,7 @@
   "author": { "@type": "Organization", "name": "RedPixl s.r.o." }
 }
 </script>
-<link rel="stylesheet" href="style.css?v=5e8125ac">
+<link rel="stylesheet" href="style.css?v=df9d82b9">
 </head>
 <body>
 <header><div class="wrap">
@@ -96,19 +96,6 @@
 </div>
 <p class="shots-hint">Tap any screen to enlarge</p>
 
-<!-- ⚠️ No Siri logo, no orb, no Apple imagery. Apple does not license those for
-     third-party marketing, and a decorative icon is not worth a trademark
-     problem — the same reason the app is never called "Hermes". What sells this
-     is the SPOKEN PHRASE, and the phrase is ours. It doubles as documentation:
-     this is the actual invocation the App Intent registers. -->
-<div class="say">
-  <p class="say-label">Say it out loud</p>
-  <p class="say-bubble">“Ask&nbsp;Kite”</p>
-  <p class="say-reply">“What should I ask?”</p>
-  <p class="say-bubble">“What’s using my disk space”</p>
-  <p class="say-note">The answer comes back without the app ever opening. “Send&nbsp;to&nbsp;Kite” hands over a long job instead and notifies you when it lands.</p>
-</div>
-
 <h2>Bring your own model</h2>
 <p>The endpoint is a plain text field, and the API key is optional. That means the obvious providers — OpenRouter, Groq, Together, DeepInfra, Nous Portal — and it equally means <strong>a model running on your own computer</strong>, reached from anywhere over your own private network.</p>
 <p>Free models are badged so you know before you send, and your choice is remembered per conversation. Nothing is metered by us, because we are not in the path: you pay your provider, or nobody.</p>
@@ -128,6 +115,19 @@
   <li><strong>Send it anything.</strong> Share a link, a photo or a document from any app straight to your agent — PDFs are read on your phone, including scans. Photos need a model that can see images; pick one and your agent reads them too.</li>
   <li><strong>Pick up where you left off.</strong> Conversations are shared with your desktop, your terminal and anything else that talks to your agent.</li>
 </ul>
+
+<!-- ⚠️ No Siri logo, no orb, no Apple imagery. Apple does not license those for
+     third-party marketing, and a decorative icon is not worth a trademark
+     problem — the same reason the app is never called "Hermes". What sells this
+     is the SPOKEN PHRASE, and the phrase is ours. It doubles as documentation:
+     this is the actual invocation the App Intent registers. -->
+<div class="say">
+  <p class="say-label">Say it out loud</p>
+  <p class="say-bubble">“Ask&nbsp;Kite”</p>
+  <p class="say-reply">“What should I ask?”</p>
+  <p class="say-bubble">“What’s using my disk space”</p>
+  <p class="say-note">The answer comes back without the app ever opening. “Send&nbsp;to&nbsp;Kite” hands over a long job instead and notifies you when it lands.</p>
+</div>
 
 <h2>More than one machine</h2>
 <p>A Mac at home and a server that never sleeps: Kite keeps both and switches with a tap, each remembering its own model. Adding a server takes no code and no terminal — type its name on your tailnet and it hands the phone what it needs.</p>
