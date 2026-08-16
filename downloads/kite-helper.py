@@ -616,7 +616,22 @@ class Helper:
         req = urllib.request.Request(
             f"{RELAY_URL}/{path}",
             data=json.dumps(payload).encode(),
-            headers={"Content-Type": "application/json"},
+            headers={
+                "Content-Type": "application/json",
+                # ⚠️ Cloudflare blocks the default urllib User-Agent outright.
+                #
+                # `Python-urllib/3.x` gets HTTP 403 "error code: 1010" — a
+                # Cloudflare browser-signature ban, delivered before the Worker
+                # is ever reached, so it looks exactly like the relay rejecting
+                # the key. Any ordinary agent string passes. Reproduced against
+                # the live relay: default → 1010, "KiteHelper/1.0" → the
+                # Worker's own answer.
+                #
+                # This is why push never worked from a Linux helper. The Mac's
+                # uses URLSession, whose agent is unremarkable, which is why it
+                # worked there and hid this for weeks.
+                "User-Agent": "KiteHelper/1.0 (+https://kiteagent.app)",
+            },
             method="POST",
         )
 
