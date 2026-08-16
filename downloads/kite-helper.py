@@ -221,6 +221,9 @@ class Helper:
         # Reported to an enrolling phone, which has no other way to learn it.
         self.port = 0
         self.push_key: str | None = None
+        # Strong references to in-flight watchers. Without this they are
+        # collectable the moment their connection handler returns.
+        self._watchers: set[asyncio.Task] = set()
         self.activity_tokens: dict[str, str] = {}
         self._load_push()
 
@@ -361,7 +364,21 @@ class Helper:
         # evidence. An evening was spent unable to tell them apart.
         if client_first and session:
             print(f"  client left mid-run — watching {session}", flush=True)
-            asyncio.create_task(self._watch_and_notify(session))
+            # ⚠️ Keep a strong reference, or the task is collected mid-sleep.
+            #
+            # asyncio holds only a WEAK reference to a task; the Python docs say
+            # to save the result of create_task "to avoid a task disappearing
+            # mid-execution". This one sleeps in 3s steps for up to five minutes,
+            # long after the handler that created it has returned and dropped the
+            # only strong reference — so the garbage collector was free to take
+            # it, and did.
+            #
+            # The tell was what was MISSING from the log: neither "push sent" nor
+            # "no reply appeared within 5 minutes". A task that finishes must
+            # print one of them. Silence meant it had ceased to exist.
+            task = asyncio.create_task(self._watch_and_notify(session))
+            self._watchers.add(task)
+            task.add_done_callback(self._watcher_finished)
         elif client_first:
             print("  client left mid-run but no session id — cannot notify", flush=True)
         elif session:
@@ -476,6 +493,19 @@ class Helper:
         status = b"200 OK" if ok else b"400 Bad Request"
         writer.write(b"HTTP/1.1 " + status + b"\r\nContent-Length: 0\r\nConnection: close\r\n\r\n")
         await writer.drain()
+
+    def _watcher_finished(self, task: "asyncio.Task") -> None:
+        """Drop the reference, and never let an exception vanish.
+
+        A task that dies raising is as silent as one that is collected, which is
+        the failure this whole change exists to stop happening again.
+        """
+        self._watchers.discard(task)
+        if task.cancelled():
+            return
+        exc = task.exception()
+        if exc is not None:
+            print(f"  watcher failed: {exc!r}", flush=True)
 
     # -- push
 
