@@ -582,10 +582,17 @@ class Helper:
                 if role == "user":
                     return False
             return False
-        except Exception:
-            # Unreadable: assume it is a reply rather than never notifying at
-            # all. A spurious notification is a smaller failure than silence.
-            return True
+        except Exception as exc:
+            # ⚠️ Do NOT assume a reply.
+            #
+            # This used to return True on any failure, reasoning that a spurious
+            # notification beats silence. In practice a read that keeps failing
+            # fires a notification every poll, for runs that have not answered —
+            # reported as "random notifications", with nothing to show for them.
+            # Crying wolf repeatedly is worse than one missed alert, and the
+            # window keeps polling anyway.
+            print(f"  cannot read messages on {session_id}: {exc!r}", flush=True)
+            return False
 
     async def _message_count(self, session_id: str) -> int | None:
         try:
