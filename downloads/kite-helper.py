@@ -224,6 +224,9 @@ class Helper:
         # Strong references to in-flight watchers. Without this they are
         # collectable the moment their connection handler returns.
         self._watchers: set[asyncio.Task] = set()
+        # Sessions already being watched, so a second disconnect on the same run
+        # does not add a second notification.
+        self._watched: set[str] = set()
         self.activity_tokens: dict[str, str] = {}
         self._load_push()
 
@@ -362,7 +365,17 @@ class Helper:
         # never left first, or no session id was parsed, or the watcher ran for
         # five minutes and saw nothing — three unrelated faults with identical
         # evidence. An evening was spent unable to tell them apart.
-        if client_first and session:
+        if client_first and session and session in self._watched:
+            # ⚠️ One reply, one notification.
+            #
+            # Every disconnect used to start its own watcher, and now that they
+            # survive garbage collection they all fire — so a run the phone left
+            # three times sent three notifications for one answer. Reported as
+            # "random notifications", which is exactly what it looks like from
+            # the outside.
+            print(f"  already watching {session} — not starting another", flush=True)
+        elif client_first and session:
+            self._watched.add(session)
             print(f"  client left mid-run — watching {session}", flush=True)
             # ⚠️ Keep a strong reference, or the task is collected mid-sleep.
             #
@@ -510,6 +523,12 @@ class Helper:
     # -- push
 
     async def _watch_and_notify(self, session_id: str) -> None:
+        try:
+            await self._watch_and_notify_inner(session_id)
+        finally:
+            self._watched.discard(session_id)
+
+    async def _watch_and_notify_inner(self, session_id: str) -> None:
         """A run continues server-side after the client disconnects — verified —
         so this only has to watch for the transcript to grow."""
         baseline = await self._message_count(session_id)
