@@ -135,7 +135,8 @@ bash install-hermes-server.sh</code></pre>
 <p>While an agent works, each step appears as its own row — a search, a command, a file read. <strong>Tap a row and it shows what was actually asked for</strong>: the command, the path, the URL. Collapsed it stays out of the way; open it is evidence rather than a claim.</p>
 
 <h2 id="siri">Siri and Shortcuts</h2>
-<p>Kite answers Siri without opening. Say <strong>“Ask Kite”</strong>, then your question; it goes to whichever connection Kite is currently pointed at, waits for the reply, and Siri reads it out. Ask your agent whether the build passed while you are walking to the car, and you never touch the phone.</p>
+<p>Kite answers Siri without opening. Say <strong>“Ask Kite”</strong>, then your question; it goes to whichever connection Kite is currently pointed at, waits for the reply, and hands it back to Siri. Ask your agent whether the build passed while you are walking to the car, and you never touch the phone.</p>
+<p class="note">Whether Siri <em>speaks</em> the answer or just shows it is an iOS setting, not something Kite controls: <strong>Settings ▸ Siri ▸ Siri Responses</strong>. If you expected it read aloud and got text, that is where to look.</p>
 <p><strong>“Send to Kite”</strong> is the other half: it hands the message over and returns immediately, which is right for anything long. The run continues on your machine and the reply arrives as a notification.</p>
 <p>Both appear in the Shortcuts app under Kite, so you can put them in an automation, on the Home Screen, or on the Action button. “Ask Kite” returns the reply as text, so a shortcut can send it on somewhere — into a note, a message, anything.</p>
 <p class="note">The spoken answer is trimmed to something Siri can sensibly read. A shortcut receives the whole reply, however long.</p>
