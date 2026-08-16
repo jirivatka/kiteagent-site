@@ -596,6 +596,22 @@ button:disabled { opacity: .6; cursor: default; }
   text-wrap: balance;
   max-width: 24rem;
 }
+/* ⚠️ Two bubbles, not one. The first version showed
+   "Ask Kite what's using my disk space" as a single sentence, which is not how
+   it works: the registered phrase carries no parameter, so Siri asks "What
+   should I ask?" and waits. Showing one utterance promised an interaction the
+   app does not have. */
+.say-reply {
+  margin: .55rem auto;
+  max-width: 24rem;
+  font-size: .95rem;
+  color: var(--muted);
+  font-style: italic;
+}
+.say-bubble + .say-reply + .say-bubble {
+  border-radius: 20px 20px 6px 20px;   /* tail on the other side — your turn again */
+}
+
 .say-note {
   margin: 1rem auto 0;
   max-width: 32rem;
