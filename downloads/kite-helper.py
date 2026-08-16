@@ -521,6 +521,16 @@ class Helper:
             await asyncio.sleep(3)
             now = await self._message_count(session_id)
             if now is not None and now > baseline:
+                # ⚠️ The count grows on TOOL messages too.
+                #
+                # A run that shells out adds rows long before it has anything to
+                # say, so counting alone notified "your agent replied" while it
+                # was still working — observed firing 2m15s before the reply
+                # existed. Only an assistant message means there is something to
+                # come back for.
+                if not await self._has_reply(session_id):
+                    baseline = now
+                    continue
                 await self._send_push(session_id)
                 # ⚠️ The activity has to be ended too, and from here. A suspended
                 # app cannot update its own Live Activity, so without this the
@@ -530,6 +540,33 @@ class Helper:
                 return
         # Five minutes with no new message. Better said than left as silence.
         print(f"  no reply appeared on {session_id} within 5 minutes", flush=True)
+
+    async def _has_reply(self, session_id: str) -> bool:
+        """Has the agent actually said something, as opposed to run a tool?"""
+        try:
+            import urllib.request
+            req = urllib.request.Request(
+                f"http://{self.gateway_host}:{self.gateway_port}"
+                f"/api/sessions/{session_id}/messages",
+                headers={"Authorization": f"Bearer {self.gateway_key}"},
+            )
+            loop = asyncio.get_running_loop()
+            raw = await loop.run_in_executor(
+                None, lambda: urllib.request.urlopen(req, timeout=10).read()
+            )
+            data = json.loads(raw)
+            rows = data.get("data") or data.get("messages") or []
+            for row in reversed(rows):
+                role = row.get("role")
+                if role == "assistant":
+                    return bool((row.get("content") or "").strip())
+                if role == "user":
+                    return False
+            return False
+        except Exception:
+            # Unreadable: assume it is a reply rather than never notifying at
+            # all. A spurious notification is a smaller failure than silence.
+            return True
 
     async def _message_count(self, session_id: str) -> int | None:
         try:
@@ -588,13 +625,24 @@ class Helper:
                 with urllib.request.urlopen(req, timeout=20) as resp:
                     return 200 <= resp.status < 300
             except urllib.error.HTTPError as exc:
+                # ⚠️ Say what the relay actually said.
+                #
+                # "push failed" on its own is useless: an unknown key, a
+                # malformed body and a relay outage are three different faults
+                # with three different fixes, and they printed the same word.
+                try:
+                    detail = exc.read().decode("utf-8", "replace")[:200]
+                except Exception:
+                    detail = ""
+                print(f"  relay refused {path}: HTTP {exc.code} {detail}", flush=True)
                 # 410: the phone is gone — app deleted, or the token rotated.
                 # Forget the key so every later reply does not retry a dead device.
                 if exc.code == 410:
                     self.push_key = None
                     self._save_push()
                 return False
-            except Exception:
+            except Exception as exc:
+                print(f"  relay unreachable for {path}: {exc!r}", flush=True)
                 return False
 
         return await asyncio.get_running_loop().run_in_executor(None, _send)
