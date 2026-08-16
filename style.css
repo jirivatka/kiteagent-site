@@ -557,3 +557,48 @@ pre code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
 button.download, button.ghost { border: 0; cursor: pointer; font: inherit; }
 button.ghost { border: 1px solid var(--line); }
 button:disabled { opacity: .6; cursor: default; }
+
+
+/* ---- The spoken phrase -------------------------------------------------
+   A voice feature is hard to show and easy to say. This is the one part of
+   Kite that has no screen at all, so the page gives it the words instead of a
+   picture.
+
+   ⚠️ Deliberately no Siri logo or orb: Apple does not license those for
+   third-party marketing. The bubble carries only the phrase a person actually
+   says, which is ours and is also the exact invocation the App Intent
+   registers — so it stays true as documentation, not just decoration. */
+.say {
+  margin: 2.5rem 0 2rem;
+  padding: 1.5rem 1.25rem;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+  text-align: center;
+}
+.say-label {
+  margin: 0 0 .75rem;
+  font-size: .72rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.say-bubble {
+  display: inline-block;
+  margin: 0;
+  padding: .7rem 1.1rem;
+  border-radius: 20px 20px 20px 6px;   /* a tail, so it reads as speech */
+  background: var(--bg);
+  border: 1px solid var(--line);
+  font-size: 1.12rem;
+  line-height: 1.4;
+  /* Balanced so the phrase never breaks after one word on a narrow screen. */
+  text-wrap: balance;
+  max-width: 24rem;
+}
+.say-note {
+  margin: 1rem auto 0;
+  max-width: 32rem;
+  font-size: .9rem;
+  color: var(--muted);
+}

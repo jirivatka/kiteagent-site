@@ -35,7 +35,7 @@
   "author": { "@type": "Organization", "name": "RedPixl s.r.o." }
 }
 </script>
-<link rel="stylesheet" href="style.css?v=9720215f">
+<link rel="stylesheet" href="style.css?v=c817814a">
 </head>
 <body>
 <header><div class="wrap">
@@ -95,6 +95,17 @@
   </figure>
 </div>
 <p class="shots-hint">Tap any screen to enlarge</p>
+
+<!-- ⚠️ No Siri logo, no orb, no Apple imagery. Apple does not license those for
+     third-party marketing, and a decorative icon is not worth a trademark
+     problem — the same reason the app is never called "Hermes". What sells this
+     is the SPOKEN PHRASE, and the phrase is ours. It doubles as documentation:
+     this is the actual invocation the App Intent registers. -->
+<div class="say">
+  <p class="say-label">Say it out loud</p>
+  <p class="say-bubble">“Ask&nbsp;Kite what’s using my disk space”</p>
+  <p class="say-note">Siri reads the answer back, without opening the app. “Send&nbsp;to&nbsp;Kite” hands over a long job instead and notifies you when it lands.</p>
+</div>
 
 <h2>Bring your own model</h2>
 <p>The endpoint is a plain text field, and the API key is optional. That means the obvious providers — OpenRouter, Groq, Together, DeepInfra, Nous Portal — and it equally means <strong>a model running on your own computer</strong>, reached from anywhere over your own private network.</p>
