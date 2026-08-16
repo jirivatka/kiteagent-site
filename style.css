@@ -90,6 +90,23 @@ footer .wrap { padding: 1.5rem 1.25rem; }
    sticky bar 92px tall — a ninth of the screen, permanently. */
 .mark { white-space: nowrap; }
 
+/* ⚠️ The nav overflowed the viewport on a 375px phone — four links plus the
+   wordmark measured 396px, so EVERY page scrolled sideways. On the site for an
+   iPhone app, seen mostly on iPhones. It predates the screenshot work; it was
+   found by measuring scrollWidth against clientWidth rather than by looking,
+   because a 21px overflow is easy to miss and easy to blame on the page.
+   Tightening the gap and letting the labels shrink keeps one row without
+   hiding anything. */
+@media (max-width: 430px) {
+  header .wrap { gap: .4rem; }
+  nav { gap: .7rem; }
+  nav a { font-size: .85rem; }
+}
+@media (max-width: 360px) {
+  nav { gap: .55rem; }
+  nav a { font-size: .8rem; }
+}
+
 /* Attribution line. Deliberately quiet — it is a legal necessity, not a claim. */
 .fineprint {
   font-size: .8rem;
@@ -134,13 +151,98 @@ footer .wrap { padding: 1.5rem 1.25rem; }
   max-width: 720px;
 }
 .shots figure { margin: 0; }
-.shots img {
+
+/* ---- Device frames ------------------------------------------------------
+   A screenshot on a white page reads as a picture of an interface. The same
+   screenshot inside a bezel reads as a phone someone is holding, and that is
+   the difference between "here is a design" and "here is a thing that runs".
+
+   Drawn in CSS rather than composited into the PNGs: the images stay exactly
+   what the simulator produced, so they can go to App Store Connect unedited,
+   and a frame that is CSS costs nothing to restyle later. It also stays sharp
+   at any density, which a baked-in bezel does not. */
+.device {
+  display: block;
+  padding: 5px;
+  border-radius: 20px;
+  background: linear-gradient(160deg, #d8dbe2, #a9aeb9 40%, #cfd3db);
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / .55) inset,
+    0 10px 28px rgb(0 0 0 / .18);
+}
+.device img {
   width: 100%;
   height: auto;
-  border-radius: 14px;
-  border: 1px solid rgb(0 0 0 / .10);
-  box-shadow: 0 4px 16px rgb(0 0 0 / .10);
   display: block;
+  border-radius: 15px;
+  /* The screen sits inside the bezel, not flush with it. Without this line the
+     bright screenshot bleeds into the light frame and the whole thing flattens
+     back into a rectangle. */
+  box-shadow: 0 0 0 1px rgb(0 0 0 / .28);
+}
+@media (prefers-color-scheme: dark) {
+  .device {
+    background: linear-gradient(160deg, #4a4f5a, #2b2f38 40%, #434853);
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / .10) inset,
+      0 10px 28px rgb(0 0 0 / .45);
+  }
+}
+
+/* ---- The pair -----------------------------------------------------------
+   The iPad behind, the phone in front and overhanging it. Overlap rather than
+   two tidy objects side by side: side by side reads as a comparison chart,
+   which invites working out how they differ. Overlapping reads as one product
+   on two screens, which is the actual claim. */
+.pair {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  margin: 2.5rem 0 1rem;
+  padding-bottom: 1.5rem;
+}
+.device-pad { width: min(74%, 430px); border-radius: 26px; }
+.device-pad img { border-radius: 21px; }
+.device-phone {
+  width: min(27%, 158px);
+  /* Pulled left over the iPad and dropped below its bottom edge, so the phone
+     clearly sits in front rather than merely beside. */
+  margin-left: -9%;
+  margin-bottom: -1.5rem;
+  z-index: 1;
+  cursor: zoom-in;
+}
+.pair-note {
+  text-align: center;
+  color: var(--muted);
+  font-size: .92rem;
+  max-width: 34rem;
+  margin: 1.5rem auto 2.5rem;
+}
+@media (max-width: 520px) {
+  /* The phone-over-iPad overlap needs width to stay legible. Below this the
+     iPad alone says the same thing, and the phone screen is on the grid
+     immediately underneath anyway.
+
+     ⚠️ Written as `.pair .device-phone`, two classes, on purpose. As a single
+     class it lost to `.shot { display: block }` further down the file — same
+     specificity, later wins — so the phone stayed visible on a 375px screen and
+     shoved the iPad off the edge. Raising specificity makes it independent of
+     where these rules sit in the file, which is worth more than the tidiness of
+     matching the selector above. */
+  .pair .device-phone { display: none; }
+  .pair .device-pad { width: 100%; }
+  .pair { padding-bottom: 0; }
+}
+
+/* A slight vertical offset on the middle column. Six identical rectangles on a
+   strict baseline read as a contact sheet; breaking the line makes it a group
+   of objects. Only the middle one moves — offsetting alternates turns an even
+   row into a zigzag, which is busier than the page's voice. */
+.shots figure:nth-child(3n + 2) { transform: translateY(1.6rem); }
+@media (max-width: 520px) {
+  .shots figure:nth-child(3n + 2) { transform: none; }
 }
 .shots figcaption {
   margin-top: .5rem;
@@ -254,22 +356,33 @@ pre code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
 .shot {
   display: block;
   cursor: zoom-in;
-  border-radius: 14px;
+  border-radius: 20px;
 }
 .shot:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
-.shot img { transition: transform .18s ease, box-shadow .18s ease; }
-.shot:hover img {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 24px rgb(0 0 0 / .16);
+/* The whole device lifts, not the screen inside it. Moving the image alone
+   slid the screenshot within its own bezel, which looked like a bug. */
+.shot { transition: transform .18s ease, box-shadow .18s ease; }
+.shot:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / .55) inset,
+    0 16px 34px rgb(0 0 0 / .22);
 }
 .shots-hint {
   text-align: center;
   font-size: .82rem;
   color: var(--muted);
-  margin: -1.4rem 0 2.5rem;
+  /* ⚠️ Positive, not the -1.4rem it used to be. That negative pull was tuned
+     for a flat grid; once the middle column drops by 1.6rem the last caption
+     lands on top of this line. The offset has to be paid back here. */
+  margin: 2.6rem 0 2.5rem;
+}
+@media (max-width: 520px) {
+  /* No stagger below this width, so no debt to repay. */
+  .shots-hint { margin: 1rem 0 2.5rem; }
 }
 
 /* ---- The viewer ---------------------------------------------------------
@@ -355,8 +468,9 @@ pre code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
   font-size: 1.7rem;
 }
 @media (prefers-reduced-motion: reduce) {
-  .shot img { transition: none; }
-  .shot:hover img { transform: none; }
+  .shot { transition: none; }
+  .shot:hover { transform: none; }
+  .shots figure:nth-child(3n + 2) { transform: none; }
 }
 
 
