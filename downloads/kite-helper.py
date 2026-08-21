@@ -348,7 +348,31 @@ class Helper:
                 asyncio.open_connection(self.gateway_host, self.gateway_port), timeout=10
             )
         except Exception:
-            writer.write(b"HTTP/1.1 502 Bad Gateway\r\nContent-Length: 0\r\nConnection: close\r\n\r\n")
+            # ⚠️ A body, not an empty 502.
+            #
+            # This helper stays bound whether or not the agent is up, so this is
+            # the NORMAL answer while the agent is down — and on a headless
+            # server it is the only channel there is. There is no menu bar to
+            # look at and usually no one watching the journal, so an empty 502
+            # leaves the person holding the phone with a bare status code and
+            # four indistinguishable explanations: the agent, the network, the
+            # pairing, or the app.
+            #
+            # Matches what the macOS helper says, so the same failure reads the
+            # same way whichever machine the agent lives on.
+            why = (
+                f"Kite Helper is running on this machine, but the agent is not "
+                f"answering on {self.gateway_host}:{self.gateway_port}. "
+                f"Start Hermes there, then try again."
+            )
+            body = json.dumps({"error": {"message": why}}).encode()
+            writer.write(
+                b"HTTP/1.1 502 Bad Gateway\r\n"
+                b"Content-Type: application/json\r\n"
+                + f"Content-Length: {len(body)}\r\n".encode()
+                + b"Connection: close\r\n\r\n"
+                + body
+            )
             await writer.drain()
             return
 
