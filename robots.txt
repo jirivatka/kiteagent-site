@@ -2,3 +2,41 @@ User-agent: *
 Allow: /
 
 Sitemap: https://kiteagent.app/sitemap.xml
+# AI training crawlers: do not use this site's content to train models.
+# Search is deliberately untouched. Googlebot, Bingbot, Applebot and
+# DuckDuckBot still index this site normally -- the "-Extended" tokens below
+# control training use only and do not affect search ranking or indexing.
+# Note: robots.txt is honoured voluntarily. It is a request, not enforcement.
+
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: Applebot-Extended
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: meta-externalagent
+Disallow: /
+
+User-agent: FacebookBot
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: cohere-ai
+Disallow: /
