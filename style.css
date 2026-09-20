@@ -115,6 +115,26 @@ footer .wrap { padding: 1.5rem 1.25rem; }
   max-width: 60ch;
 }
 
+/* ---- Launch film --------------------------------------------------------
+   Full column width, 16:9. The film is dark (#0f1115) whatever the page theme,
+   so the hairline keeps its edge visible against the dark page background. */
+.film { margin: 0 0 2.5rem; }
+.film video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  background: #0f1115;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.film figcaption {
+  text-align: center;
+  color: var(--muted);
+  font-size: .92rem;
+  margin-top: .7rem;
+}
+
 /* The icon at a size where it reads as a product, near the end where someone
    has finished reading and is deciding whether they want it. */
 .hero-mark {

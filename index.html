@@ -35,7 +35,7 @@
   "author": { "@type": "Organization", "name": "RedPixl s.r.o." }
 }
 </script>
-<link rel="stylesheet" href="style.css?v=df9d82b9">
+<link rel="stylesheet" href="style.css?v=83cd55fb">
 </head>
 <body>
 <header><div class="wrap">
@@ -54,6 +54,19 @@
   </p>
   <p class="hero-note">And if you run the <strong>Hermes</strong> agent, Kite brings its tools, memory and your files with it — the part no other chat client can do.</p>
 </div>
+
+<!-- Launch film. Self-hosted on purpose: a YouTube embed would put a third-party
+     script and cookies on a page whose privacy policy says there are none.
+     preload="none" so nobody downloads 2 MB without pressing play. The film
+     shows the same "In testing" status as the hero above — change both together
+     when the app ships. -->
+<figure class="film">
+  <video controls preload="none" playsinline width="1920" height="1080" poster="/video/kite-agent-poster.jpg">
+    <source src="/video/kite-agent.mp4" type="video/mp4">
+    Your browser cannot play this video. <a href="/video/kite-agent.mp4">Download it</a> instead.
+  </video>
+  <figcaption>Kite in forty seconds.</figcaption>
+</figure>
 
 <!-- The pair, before the grid. Two jobs at once: it shows the one screen no
      other client can show — the commands the agent actually ran — and it says
