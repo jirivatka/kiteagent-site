@@ -26,7 +26,7 @@
 <main class="wrap">
 <h1>Privacy Policy</h1>
 <p class="lede">Kite Agent is a client for an AI agent that runs on your own computer. Your conversations stay between your phone and your machine.</p>
-<p class="updated">Last updated: 4 September 2026</p>
+<p class="updated">Last updated: 21 September 2026</p>
 
 <div class="card">
 <p><strong>The short version.</strong> No conversation of yours passes through any server of ours. <strong>The app</strong> collects no analytics and uses no tracking or advertising SDKs of any kind. Kite talks to your own computer, and — only if you explicitly choose to — to an AI provider that you select and hold your own account with. <strong>This website</strong> counts page views, described below.</p>
@@ -56,7 +56,7 @@
 <h2>This website</h2>
 <p>The app and the website are separate, and it would be misleading to describe them together.</p>
 <ul>
-  <li><strong>The app collects nothing.</strong> No analytics, no crash reporting, no third-party SDKs — verified against the shipped binary, which links only Apple's own frameworks.</li>
+  <li><strong>The app collects nothing.</strong> No analytics and no crash reporting, on any platform. On iPhone and iPad it uses no third-party SDKs — verified against the shipped binary, which links only Apple's own frameworks. The Android app includes three Google libraries, each for one job described on this page: Firebase Cloud Messaging (notifications), Google Play Billing (the one-time unlock) and ML Kit (reading the pairing QR code, on the device). We add nothing to them and receive nothing they send to Google; Google's own privacy policy governs what they do.</li>
   <li><strong>This website uses Cloudflare Web Analytics</strong> to count page views. It sets <strong>no cookies</strong>, stores no identifier on your device, and cannot follow you to other sites. We see totals — which pages were viewed, roughly where from, which referrer — never individuals.</li>
   <li>You can block it with any content blocker and the site works identically.</li>
 </ul>
@@ -78,8 +78,8 @@
 
 <h2 id="notifications">Notifications</h2>
 <p>If you enable notifications, Kite can tell you when your agent has replied. Those notifications <strong>contain no message content</strong> — only the fact that a reply arrived. The reply itself is fetched by the app directly from your own computer.</p>
-<p><strong>This is the one part of Kite that involves a server of ours.</strong> Sending a notification to an Apple device requires a signing key that belongs to the developer account, and that key can never be given out — so it lives on a small relay we run, and your agent asks the relay to wake your phone.</p>
-<p>The relay is sent, and stores, <strong>one thing: your device's notification token</strong>, so your agent can reach that phone later. It is not connected to a name, an email or an account, because Kite has none. It receives your agent's IP address the way any server does, and neither logs nor stores it.</p>
+<p><strong>This is the one part of Kite that involves a server of ours.</strong> Sending a notification to a phone requires a credential that belongs to the developer account — an Apple signing key for iPhone and iPad, a Google service account for Android — and it can never be given out, so it lives on a small relay we run, and your agent asks the relay to wake your phone. On Android the notification is delivered through Google's Firebase Cloud Messaging.</p>
+<p>The relay is sent, and stores, <strong>one thing: your device's notification token</strong>, along with whether it is an Apple or an Android one, so your agent can reach that phone later. It is not connected to a name, an email or an account, because Kite has none. It receives your agent's IP address the way any server does, and neither logs nor stores it.</p>
 <p><strong>It is kept for 90 days.</strong> The app re-registers every time you open it, so an active phone refreshes its entry long before that; one you stop using drops out on its own. Delete Kite and the entry expires within 90 days with nothing further to do.</p>
 <p>It cannot receive your messages. The notification wording is fixed in the relay's own source rather than being something a request can set, so there is nothing for a conversation to travel in.</p>
 <p>Notifications are optional. Decline them and nothing is ever sent to the relay. If you run your own agent you can also point it at your own relay instead of ours.</p>

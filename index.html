@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Kite Agent — your models and your agent, on your phone</title>
-<meta name="description" content="An iOS chat client for any OpenAI-compatible endpoint — OpenRouter, Groq, Together, or a model running on your own Mac with Ollama or LM Studio. Your key, no account, no subscription. And if you run the Hermes agent, it brings its tools, memory and files to your phone.">
+<meta name="description" content="A chat client for iPhone, iPad and Android, for any OpenAI-compatible endpoint — OpenRouter, Groq, Together, or a model running on your own Mac with Ollama or LM Studio. Your key, no account, no subscription. And if you run the Hermes agent, it brings its tools, memory and files to your phone.">
 <link rel="icon" href="/favicon-32.png" sizes="32x32">
 <link rel="icon" href="/icon-512.png" sizes="512x512">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -33,8 +33,8 @@
   "@type": "SoftwareApplication",
   "name": "Kite Agent",
   "applicationCategory": "DeveloperApplication",
-  "operatingSystem": "iOS 17+",
-  "description": "An iOS chat client for any OpenAI-compatible model endpoint, and for the Hermes agent running on your own computer.",
+  "operatingSystem": "iOS 17+, Android 8.0+",
+  "description": "A chat client for iPhone, iPad and Android, for any OpenAI-compatible model endpoint and for the Hermes agent running on your own computer.",
   "url": "https://kiteagent.app/",
   "image": "https://kiteagent.app/icon-512.png",
   "author": { "@type": "Organization", "name": "RedPixl s.r.o." }
@@ -65,11 +65,12 @@
 
 <main class="wrap">
 <div class="hero">
-  <p class="status"><span class="dot" aria-hidden="true"></span>In testing</p>
+  <p class="status"><span class="dot" aria-hidden="true"></span>Live on Android · iOS in testing</p>
   <h1>Your models, your machine, your phone.</h1>
   <p class="lede">Kite talks to <strong>any OpenAI-compatible endpoint</strong> with your own key — OpenRouter, Groq, Together, or a model running on your own Mac through Ollama or LM Studio. No account, no subscription, nothing of yours passing through us.</p>
   <p class="cta">
-    <a class="download" href="/updates.html">Get emailed about new releases</a>
+    <a class="download" href="https://play.google.com/store/apps/details?id=app.kiteagent.kite">Get it on Google Play</a>
+    <a class="ghost" href="/updates.html">Get emailed about new releases</a>
     <a class="ghost" href="/manual.html">Read the manual</a>
   </p>
   <p class="hero-note">And if you run the <strong>Hermes</strong> agent, Kite brings its tools, memory and your files with it — the part no other chat client can do.</p>
@@ -77,9 +78,10 @@
 
 <!-- Launch film. Self-hosted on purpose: a YouTube embed would put a third-party
      script and cookies on a page whose privacy policy says there are none.
-     preload="none" so nobody downloads 2 MB without pressing play. The film
-     shows the same "In testing" status as the hero above — change both together
-     when the app ships. -->
+     preload="none" so nobody downloads 2 MB without pressing play. The film's
+     last scene still carries a plain "In testing" pill, recorded before Android
+     went live (2026-09-21); the hero now says "Live on Android · iOS in testing".
+     Re-render the film when iOS ships so the two agree. -->
 <figure class="film">
   <video controls preload="none" playsinline width="1920" height="1080" poster="/video/kite-agent-poster.jpg">
     <source src="/video/kite-agent.mp4" type="video/mp4">
@@ -143,9 +145,9 @@
 <h2>What it does</h2>
 <ul>
   <li><strong>See what it’s doing.</strong> Searching, reading, running commands — the steps appear as they happen. Tap any step to see the command it actually ran.</li>
-  <li><strong>Ask without opening it.</strong> “Ask Kite” and the answer comes back without the app opening. “Send to Kite” hands over a long job and notifies you when it lands. Both work from Shortcuts, an automation or the Action button.</li>
-  <li><strong>Know when it’s done.</strong> A notification when a long task finishes, and a live view on your Lock Screen while it works.</li>
-  <li><strong>Send it anything.</strong> Share a link, a photo or a document from any app straight to your agent — PDFs are read on your phone, including scans. Photos need a model that can see images; pick one and your agent reads them too.</li>
+  <li><strong>Ask without opening it (iPhone and iPad).</strong> “Ask Kite” and the answer comes back without the app opening. “Send to Kite” hands over a long job and notifies you when it lands. Both work from Shortcuts, an automation or the Action button.</li>
+  <li><strong>Know when it’s done.</strong> A notification when a long task finishes, and, on iPhone and iPad, a live view on your Lock Screen while it works.</li>
+  <li><strong>Send it anything.</strong> Share a link, a photo or a document from any app straight to your agent. On iPhone and iPad, PDFs are read on the phone itself, including scans; on Android you can share links, text, text files and photos. Photos need a model that can see images; pick one and your agent reads them too.</li>
   <li><strong>Pick up where you left off.</strong> Conversations are shared with your desktop, your terminal and anything else that talks to your agent.</li>
 </ul>
 
@@ -155,7 +157,7 @@
      is the SPOKEN PHRASE, and the phrase is ours. It doubles as documentation:
      this is the actual invocation the App Intent registers. -->
 <div class="say">
-  <p class="say-label">Say it out loud</p>
+  <p class="say-label">Say it out loud (iPhone and iPad)</p>
   <p class="say-bubble">“Ask&nbsp;Kite”</p>
   <p class="say-reply">“What should I ask?”</p>
   <p class="say-bubble">“What’s using my disk space”</p>
@@ -177,7 +179,7 @@
 
 <h2>What you need</h2>
 <ul>
-  <li>An iPhone or iPad.</li>
+  <li>An iPhone or iPad, or an Android phone (Android 8 or newer).</li>
   <li><strong>Somewhere to send your messages.</strong> Any one of: an API key for a hosted provider — <a href="https://openrouter.ai">OpenRouter</a>, Groq, Together, Nous Portal; a model running on your own computer via <a href="https://ollama.com">Ollama</a> or LM Studio, which needs no key at all; or the <a href="https://github.com/NousResearch/hermes-agent">Hermes agent</a>, if you want tools, memory and your files.</li>
   <li><strong>Only for an agent:</strong> <a href="/download.html">Kite Helper</a> on the machine it runs on, so your phone never holds the agent's key.</li>
   <li><a href="https://tailscale.com/download">Tailscale</a> on your phone and that machine — needed to reach anything at home from outside, and always needed for a server. Not needed for a hosted provider.</li>
@@ -186,7 +188,7 @@
 <h2>What it costs</h2>
 <div class="card">
 <p><strong>Free for 14 days.</strong> Not a limited version — the whole app, both modes, every feature, for two weeks. Long enough to get Hermes running on your own machine, which is the part that takes a weekend.</p>
-<p>After that, <strong>one payment of $24.99</strong> and it is yours. No subscription, no account, nothing to cancel. It works on every device signed in to your Apple ID.</p>
+<p>After that, <strong>one payment</strong> and it is yours — $24.99 on iPhone and iPad; on Android you buy the same one-time unlock through Google Play, which shows the price. No subscription, no account, nothing to cancel. It works on every device signed in to your Apple ID, or on every Android device signed in to your Google account. A purchase on one platform does not carry over to the other.</p>
 <p>That is separate from what you spend on models. Many are free, and whatever you use is billed by your provider, not by us — as above.</p>
 </div>
 
@@ -195,7 +197,7 @@
   <p>Kite Agent</p>
 </div>
 
-<p class="updated">Kite Agent is in testing. <a href="https://github.com/jirivatka/Kite-Agent-Support/discussions">Join the discussion</a> to ask questions, or <a href="/updates.html">get emailed about new releases</a>.</p>
+<p class="updated">Kite Agent is live on Android; the iPhone and iPad version is in testing. <a href="https://github.com/jirivatka/Kite-Agent-Support/discussions">Join the discussion</a> to ask questions, or <a href="/updates.html">get emailed about new releases</a>.</p>
 </main>
 
 <dialog id="lightbox" aria-label="Screenshot viewer">
@@ -274,7 +276,7 @@
 
 <footer><div class="wrap">
 <p>© 2026 RedPixl s.r.o. · <a href="/support.html">Support</a> · <a href="/privacy.html">Privacy</a></p>
-<p class="fineprint">Kite Agent is an independent client. It is not affiliated with, endorsed by, or sponsored by Nous Research. “Hermes” refers to the open-source Hermes agent and is used here only to describe what Kite connects to.</p>
+<p class="fineprint">Kite Agent is an independent client. It is not affiliated with, endorsed by, or sponsored by Nous Research. “Hermes” refers to the open-source Hermes agent and is used here only to describe what Kite connects to. Google Play is a trademark of Google LLC.</p>
 </div></footer>
 <!-- Cloudflare Web Analytics — cookieless, no cross-site tracking. See /privacy.html -->
 <script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "73a5990c2cba4c96b40e4c8363a0e0a8"}'></script>
