@@ -261,8 +261,12 @@ footer .wrap { padding: 1.5rem 1.25rem; }
    of objects. Only the middle one moves — offsetting alternates turns an even
    row into a zigzag, which is busier than the page's voice. */
 .shots figure:nth-child(3n + 2) { transform: translateY(1.6rem); }
+/* A last tile left alone on its row sits centred, not stranded at the left. */
+.shots figure:last-child:nth-child(3n + 1) { grid-column: 2; }
 @media (max-width: 520px) {
   .shots figure:nth-child(3n + 2) { transform: none; }
+  .shots figure:last-child:nth-child(3n + 1) { grid-column: auto; }
+  .shots figure:last-child:nth-child(2n + 1) { grid-column: 1 / -1; justify-self: center; width: calc(50% - .5rem); }
 }
 .shots figcaption {
   margin-top: .5rem;
