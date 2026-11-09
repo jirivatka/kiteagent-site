@@ -38,10 +38,14 @@
 <a href="#server">An agent on a server</a> ·
 <a href="#pairing">Pairing</a> ·
 <a href="#models">Choosing a model</a> ·
+<a href="#menu">The menu</a> ·
 <a href="#using">Everyday use</a> ·
+<a href="#routines">Routines</a> ·
+<a href="#status">Status</a> ·
 <a href="#connections">More than one machine</a> ·
 <a href="#siri">Siri</a> ·
 <a href="#widget">Widget</a> ·
+<a href="#watch">Apple Watch</a> ·
 <a href="#notifications">Notifications</a> ·
 <a href="#trouble">When something goes wrong</a> ·
 <a href="#privacy">What leaves your devices</a></p>
@@ -126,6 +130,15 @@ bash install-hermes-server.sh</code></pre>
 </div>
 <p>⚠️ <strong>If you pair with a different agent, check your model.</strong> Agents are configured differently — a model your Mac can serve may not exist on your server. Kite switches you to something the new agent offers, but only when the model is genuinely absent, not when it is present and out of quota.</p>
 
+<h2 id="menu">The menu</h2>
+<p>Kite opens straight into a conversation, because you open it to talk. Everything that is not a conversation lives in a menu.</p>
+<ul>
+  <li><strong>Open it</strong> with the menu button (☰) at the top left. On iPhone you can also swipe in from the left edge of the screen; on Android, swipe right across the screen (the very edge is Android’s own Back gesture).</li>
+  <li><strong>What is in it:</strong> <em>Chats</em>, <em>Routines</em> and <em>Status</em> (the last two only when you are talking to an agent), and <em>Settings</em>. A line at the bottom says how the connection is doing: <em>Connected</em> with the model name, <em>Working…</em>, or <em>Can’t reach your agent</em>.</li>
+  <li><strong>The gear is gone.</strong> Settings is now in the menu. If you are looking for the gear or a back arrow, tap ☰ instead.</li>
+  <li><strong>Back to your chats from a conversation:</strong> on iPhone, swipe right across the conversation, or open the menu and tap <em>Chats</em>. On Android the system back gesture does it.</li>
+</ul>
+
 <h2 id="using">Everyday use</h2>
 <ul>
   <li><strong>Watch it work.</strong> Searching, reading, running commands — steps appear as they happen, not just the answer.</li>
@@ -138,6 +151,38 @@ bash install-hermes-server.sh</code></pre>
 
 <p>While an agent works, each step appears as its own row — a search, a command, a file read. <strong>Tap a row and it shows what was actually asked for</strong>: the command, the path, the URL. Collapsed it stays out of the way; open it is evidence rather than a claim.</p>
 
+<h2 id="routines">Routines</h2>
+<p>A routine is a prompt your agent runs by itself on a schedule — “every weekday at 8, summarise the overnight news”. Hermes calls them cron jobs. They run on your agent, <strong>whether or not Kite is open</strong>. Routines appear in the menu when you are talking to an agent, and need a recent version of Hermes; an older one says so on the screen.</p>
+<p><strong>The list</strong> puts running routines first, soonest next, then paused ones, then any that stopped or finished. Each row shows the name, the schedule, and when it runs next or last ran. A last run that failed is shown in red.</p>
+<p><strong>A routine’s page</strong> shows its schedule, next and last run, how many times it has run, what it asks, and the last problem if there was one. From there:</p>
+<ul>
+  <li><strong>Pause</strong> and <strong>Resume</strong> stop and restart it.</li>
+  <li><strong>Run now</strong> asks first, then your agent runs it at its next check, usually within a minute. It can use its tools, exactly as it does on schedule. It is offered for a running routine; a paused one has Resume instead, and a finished or stopped one cannot be run again.</li>
+  <li><strong>Edit</strong> opens the same form as a new routine, filled in. Only what you change is sent.</li>
+  <li><strong>Delete</strong> asks first. It cannot be undone.</li>
+</ul>
+<p><strong>Making a routine:</strong> tap + at the top right of the list. Give it a name, say what it should ask your agent, and choose when it runs: every few minutes or hours, every day, weekdays, every week, or once. <em>Custom</em> takes Hermes’s own wording, for example <code>every 2h</code>, <code>0 9 * * 1-5</code>, <code>weekdays at 9am</code> or <code>in 30m</code>. You can also stop it after a number of runs.</p>
+<div class="card">
+<p><strong>⚠️ A routine runs with no one to ask.</strong> The prompt is sent each time, and your agent can use its tools, run commands and read files, as it does when you chat. Write it as you would for something you will not be watching.</p>
+</div>
+<ul>
+  <li><strong>Times are on your agent’s clock</strong>, the time zone of the computer it runs on, which may not be your phone’s.</li>
+  <li><strong>Where the answer goes.</strong> A routine made in Kite keeps its answer on your agent’s computer. Kite shows when a routine ran and whether it worked, not the answer itself. Editing never changes where an answer goes, so a routine you set up elsewhere to deliver to, say, Telegram keeps doing so.</li>
+  <li><strong>If your agent refuses</strong> a schedule or a prompt, Kite shows its message under the form so you can fix it.</li>
+</ul>
+
+<h2 id="status">Status</h2>
+<p>The <em>Status</em> screen in the menu shows how your agent is doing and how much it has been used. Pull down to refresh. It appears only when you are talking to an agent.</p>
+<ul>
+  <li><strong>Agent.</strong> Whether it is running, or <em>Working on 1 thing now</em>, the Hermes version if your agent reports one, and the model it is set to.</li>
+  <li><strong>Today, on the agent.</strong> Requests, tokens, and how long the slowest 5% took.</li>
+  <li><strong>Usage.</strong> Today, the last 7 days and the last 30 days: how many chats, how many tokens in and out, and a cost if Hermes reports one (it is Hermes’s own estimate). Below that, where the use came from — Kite, your routines, Telegram, the terminal.</li>
+</ul>
+<div class="card">
+<p><strong>⚠️ “Today, on the agent” counts less than Usage does, and can read zero.</strong> It counts only the chats and runs sent to your agent through its API, such as from Kite. Routines, Telegram and the agent’s own terminal are not in it, and it starts again from zero each day and whenever your agent restarts. <em>Usage</em> is the figure for how much your agent was used.</p>
+</div>
+<p>Usage is worked out from your agent’s latest 200 conversations, and a conversation counts on the day it was last active. If those 200 do not reach back 30 days, the screen says so and the 30-day figure may be higher than shown. An older Hermes that does not report its own status says that instead, and Usage still shows.</p>
+
 <h2 id="siri">Siri and Shortcuts</h2>
 <p>Kite answers Siri without opening. Say <strong>“Ask Kite”</strong>, then your question; it goes to whichever connection Kite is currently pointed at, waits for the reply, and hands it back to Siri. Ask your agent whether the build passed while you are walking to the car, and you never touch the phone.</p>
 <p class="note">Whether Siri <em>speaks</em> the answer or just shows it is an iOS setting, not something Kite controls: <strong>Settings ▸ Siri ▸ Siri Responses</strong>. If you expected it read aloud and got text, that is where to look.</p>
@@ -147,6 +192,17 @@ bash install-hermes-server.sh</code></pre>
 
 <h2 id="widget">The Ask widget</h2>
 <p>Add the “Ask your agent” widget from Kite’s entry in the widget list. On iPhone it comes as a small Home Screen widget and in Lock Screen sizes; on Android it is a Home Screen widget. Tap it and Kite opens on a new chat with the cursor in the message field. It also shows whether your agent is reachable, its next routine and how many have failed, as of the last time Kite ran. It makes no network request of its own, and it never shows what your agent said.</p>
+
+<h2 id="watch">Apple Watch</h2>
+<p>Ask your agent from your wrist. <strong>Your iPhone does the asking</strong>: the watch passes your question to Kite on the phone, and the phone sends it, so keep the phone nearby. The watch never talks to your agent or holds any of your keys. This is an iPhone feature; it needs watchOS 10 or newer.</p>
+<ul>
+  <li><strong>Get it.</strong> The watch app comes with Kite. If it is not on your watch, open the Watch app on your iPhone, find Kite, and turn on <em>Show App on Apple Watch</em>.</li>
+  <li><strong>Ask.</strong> Open Kite on the watch, tap the field and speak. The answer appears on the wrist. <em>Cancel</em> stops waiting. A very long answer is trimmed for the small screen.</li>
+  <li><strong>If it takes a while.</strong> After about 40 seconds the watch says it is still working, and the answer arrives on the wrist when it is ready.</li>
+  <li><strong>Your chats.</strong> Swipe left from the ask screen for your recent chats. Open one to read it. The newest few are ready at once, and the others load when you open them, which needs the phone nearby. <em>Reply</em> carries on in the same conversation on your phone.</li>
+  <li><strong>A complication</strong> for your watch face puts Kite one tap away.</li>
+</ul>
+<p class="note">It uses the same connection as Siri and the share sheet, so the same rules apply. Your free trial has to be running or Kite unlocked. Talking to a model directly, send one message in Kite first, so it can tell you where your messages go before anything leaves your phone on its own. And if your agent stops to ask permission to run a command, the watch cannot answer: ask that one in Kite on your iPhone.</p>
 
 <h2 id="notifications">Notifications and the Lock Screen</h2>
 <p>A long task tells you when it is done, and a Live Activity shows what it is doing while you wait.</p>
